@@ -23,6 +23,7 @@ import com.robindrew.trading.provider.igindex.platform.rest.executor.getactivity
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.GetMarketNavigationExecutor;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.IMarketNavigationCache;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.MarketNavigation;
+import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.MarketNavigationCache;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarkets.GetMarketsExecutor;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarkets.Markets;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarkets.MarketsCache;
@@ -62,6 +63,10 @@ public class IgRestService implements IIgRestService {
 		this.marketNavigationCache = marketNavigationCache;
 		this.activityCache = new ActivityCache();
 		this.streamingService = new IgStreamingService(session);
+	}
+
+	public IgRestService(IgSession session) {
+		this(session, new MarketNavigationCache());
 	}
 
 	@Override
