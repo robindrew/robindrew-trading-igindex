@@ -1,6 +1,8 @@
 package com.robindrew.trading.provider.igindex.platform;
 
-public class IgException extends RuntimeException {
+import com.robindrew.trading.TradingException;
+
+public class IgException extends TradingException {
 
 	private static final long serialVersionUID = -6849116617539789277L;
 
