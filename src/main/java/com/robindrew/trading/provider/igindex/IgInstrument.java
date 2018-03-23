@@ -2,6 +2,7 @@ package com.robindrew.trading.provider.igindex;
 
 import static com.robindrew.trading.Instruments.AUD_USD;
 import static com.robindrew.trading.Instruments.BITCOIN;
+import static com.robindrew.trading.Instruments.BRENT_CRUDE_OIL;
 import static com.robindrew.trading.Instruments.DAX;
 import static com.robindrew.trading.Instruments.DOW_JONES;
 import static com.robindrew.trading.Instruments.ETHER;
@@ -9,11 +10,14 @@ import static com.robindrew.trading.Instruments.EUR_JPY;
 import static com.robindrew.trading.Instruments.EUR_USD;
 import static com.robindrew.trading.Instruments.FTSE_100;
 import static com.robindrew.trading.Instruments.GBP_USD;
+import static com.robindrew.trading.Instruments.GOLD;
 import static com.robindrew.trading.Instruments.LITECOIN;
 import static com.robindrew.trading.Instruments.RIPPLE;
+import static com.robindrew.trading.Instruments.SILVER;
 import static com.robindrew.trading.Instruments.SP_500;
 import static com.robindrew.trading.Instruments.USD_CHF;
 import static com.robindrew.trading.Instruments.USD_JPY;
+import static com.robindrew.trading.Instruments.US_CRUDE_OIL;
 
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instrument;
@@ -58,6 +62,16 @@ public class IgInstrument extends Instrument {
 	public static final IgInstrument SUNDAY_DAX = new IgInstrument("IX.D.SUNDAX.DAILY.IP", DAX);
 	/** DOW JONES (Weekend). */
 	public static final IgInstrument SUNDAY_DOW_JONES = new IgInstrument("IX.D.SUNDOW.DAILY.IP", DOW_JONES);
+
+	/** US CRUDE. */
+	public static final IgInstrument SPOT_US_CRUDE = new IgInstrument("CC.D.CL.USS.IP", US_CRUDE_OIL);
+	/** BRENT CRUDE. */
+	public static final IgInstrument SPOT_BRENT_CRUDE = new IgInstrument("CC.D.LCO.USS.IP", BRENT_CRUDE_OIL);
+
+	/** GOLD. */
+	public static final IgInstrument SPOT_GOLD = new IgInstrument("CS.D.USCGC.TODAY.IP", GOLD);
+	/** SILVER. */
+	public static final IgInstrument SPOT_SILVER = new IgInstrument("CS.D.USCSI.TODAY.IP", SILVER);
 
 	public IgInstrument(String epic, IInstrument underlying) {
 		super(epic, underlying);
