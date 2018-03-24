@@ -51,7 +51,7 @@ public class IgInstrument extends Instrument {
 	public static final IgInstrument WEEKDAY_FTSE_100 = new IgInstrument("IX.D.FTSE.DAILY.IP", FTSE_100);
 	/** DAX. */
 	public static final IgInstrument WEEKDAY_DAX = new IgInstrument("IX.D.DAX.DAILY.IP", DAX);
-	/** S&P 500. */
+	/** S&amp;P 500. */
 	public static final IgInstrument WEEKDAY_SP_500 = new IgInstrument("IX.D.SPTRD.DAILY.IP", SP_500);
 	/** DOW JONES. */
 	public static final IgInstrument WEEKDAY_DOW_JONES = new IgInstrument("IX.D.DOW.DAILY.IP", DOW_JONES);
