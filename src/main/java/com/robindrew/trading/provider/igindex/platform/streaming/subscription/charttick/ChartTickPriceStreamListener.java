@@ -159,7 +159,7 @@ public class ChartTickPriceStreamListener extends PriceCandleSubscriberStreamSin
 			try {
 
 				IPriceCandle next = tick.toPriceCandle();
-				latest.update(tick.getTimestamp(), next);
+				latest.update(next, tick.getTimestamp());
 				putNextCandle(next);
 
 			} catch (Exception e) {
