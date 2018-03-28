@@ -51,6 +51,7 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 	private final IPricePrecision precision;
 
 	private final LoopingEventConsumerThread<OnUpdate> eventConsumer;
+	private final Delay loggingDelay = new Delay(1, TimeUnit.MINUTES);
 
 	private final HandyTableListener tableListener;
 	private final ExtendedTableInfo tableInfo;
@@ -158,7 +159,6 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		private final int itemPos;
 		private final String itemName;
 		private final UpdateInfo updateInfo;
-		private final Delay loggingDelay = new Delay(1, TimeUnit.MINUTES);
 
 		public OnUpdate(int itemPos, String itemName, UpdateInfo updateInfo) {
 			this.itemPos = itemPos;
@@ -220,7 +220,6 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 			try {
 
 				IPriceCandle next = tick.toPriceCandle();
-				getPrice().update(next, tick.getTimestamp());
 				putNextCandle(next);
 
 			} catch (Exception e) {
