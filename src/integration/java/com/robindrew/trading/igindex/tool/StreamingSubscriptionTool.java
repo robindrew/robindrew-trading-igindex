@@ -4,7 +4,6 @@ import java.io.File;
 
 import com.robindrew.common.util.Threads;
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.price.candle.io.stream.sink.subscriber.IInstrumentPriceStreamListener;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.price.precision.PricePrecision;
 import com.robindrew.trading.provider.igindex.IgInstrument;
