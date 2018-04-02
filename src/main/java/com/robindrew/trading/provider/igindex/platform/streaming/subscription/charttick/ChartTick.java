@@ -25,10 +25,12 @@ public class ChartTick extends PriceTick {
 	}
 
 	public IPriceCandle toPriceCandle() {
-		BigDecimal mid = getMid();
+		BigDecimal bid = getBid();
+		BigDecimal ask = getAsk();
 		int decimalPlaces = precision.getDecimalPlaces();
-		int price = FloatingPoint.toBigInt(mid, decimalPlaces);
-		return new PriceCandleInstant(price, getTimestamp(), decimalPlaces);
+		int bidPrice = FloatingPoint.toBigInt(bid, decimalPlaces);
+		int askPrice = FloatingPoint.toBigInt(ask, decimalPlaces);
+		return new PriceCandleInstant(bidPrice, askPrice, getTimestamp(), decimalPlaces);
 	}
 
 }
