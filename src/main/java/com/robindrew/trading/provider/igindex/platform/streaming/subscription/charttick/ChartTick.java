@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.price.candle.IPriceCandle;
-import com.robindrew.trading.price.candle.format.pcf.FloatingPoint;
+import com.robindrew.trading.price.decimal.Decimals;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.price.tick.PriceTick;
 
@@ -48,8 +48,8 @@ public class ChartTick {
 		BigDecimal bid = getBid();
 		BigDecimal ask = getAsk();
 		int decimalPlaces = precision.getDecimalPlaces();
-		int bidPrice = FloatingPoint.toBigInt(bid, decimalPlaces);
-		int askPrice = FloatingPoint.toBigInt(ask, decimalPlaces);
+		int bidPrice = Decimals.toBigInt(bid, decimalPlaces);
+		int askPrice = Decimals.toBigInt(ask, decimalPlaces);
 		return new PriceTick(bidPrice, askPrice, getTimestamp(), decimalPlaces);
 	}
 
