@@ -23,8 +23,8 @@ import com.robindrew.common.date.Delay;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
-import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.precision.IPricePrecision;
+import com.robindrew.trading.price.tick.IPriceTick;
 import com.robindrew.trading.provider.igindex.platform.IgException;
 import com.robindrew.trading.provider.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
 
@@ -219,8 +219,8 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 			// Consume tick
 			try {
 
-				IPriceCandle next = tick.toPriceCandle();
-				putNextCandle(next);
+				IPriceTick next = tick.toPriceTick();
+				putNextTick(next);
 
 			} catch (Exception e) {
 				log.error("Error consuming tick", e);

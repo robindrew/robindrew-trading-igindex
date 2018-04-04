@@ -6,8 +6,8 @@ import com.robindrew.common.util.Threads;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.price.precision.PricePrecision;
+import com.robindrew.trading.price.tick.io.stream.sink.PriceTickFileSink;
 import com.robindrew.trading.provider.igindex.IgInstrument;
-import com.robindrew.trading.provider.igindex.platform.sink.PriceCandleTickFileSink;
 import com.robindrew.trading.provider.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
 
 public class StreamingSubscriptionTool {
@@ -23,7 +23,7 @@ public class StreamingSubscriptionTool {
 		try (ChartTickPriceStream priceStream = new ChartTickPriceStream(instrument, precision)) {
 			priceStream.start();
 
-			PriceCandleTickFileSink outputFile = new PriceCandleTickFileSink(instrument, new File(priceDirectory));
+			PriceTickFileSink outputFile = new PriceTickFileSink(instrument, new File(priceDirectory));
 			outputFile.start();
 
 			priceStream.register(outputFile);

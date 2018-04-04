@@ -3,9 +3,9 @@ package com.robindrew.trading.provider.igindex.platform.streaming.subscription.c
 import java.math.BigDecimal;
 
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.decimal.Decimals;
 import com.robindrew.trading.price.precision.IPricePrecision;
+import com.robindrew.trading.price.tick.IPriceTick;
 import com.robindrew.trading.price.tick.PriceTick;
 
 public class ChartTick {
@@ -44,7 +44,7 @@ public class ChartTick {
 		return ask;
 	}
 
-	public IPriceCandle toPriceCandle() {
+	public IPriceTick toPriceTick() {
 		BigDecimal bid = getBid();
 		BigDecimal ask = getAsk();
 		int decimalPlaces = precision.getDecimalPlaces();
