@@ -4,8 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.robindrew.common.date.Dates;
 import com.robindrew.common.date.UnitChrono;
 import com.robindrew.trading.platform.streaming.IStreamingService;
 import com.robindrew.trading.position.IPosition;
@@ -13,12 +19,13 @@ import com.robindrew.trading.provider.igindex.IgInstrument;
 import com.robindrew.trading.provider.igindex.platform.IgSession;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.closeposition.ClosePositionExecutor;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.closeposition.ClosePositionRequest;
+import com.robindrew.trading.provider.igindex.platform.rest.executor.closeposition.ClosePositionResponse;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getaccounts.Account;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getaccounts.AccountType;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getaccounts.GetAccountsExecutor;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getaccounts.GetAccountsResponse;
-import com.robindrew.trading.provider.igindex.platform.rest.executor.getactivity.Activity;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getactivity.ActivityCache;
+import com.robindrew.trading.provider.igindex.platform.rest.executor.getactivity.ActivityList;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getactivity.GetActivityExecutor;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.GetMarketNavigationExecutor;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.IMarketNavigationCache;
@@ -47,6 +54,8 @@ import com.robindrew.trading.provider.igindex.platform.streaming.IgStreamingServ
 import com.robindrew.trading.trade.TradeDirection;
 
 public class IgRestService implements IIgRestService {
+
+	private static final Logger log = LoggerFactory.getLogger(IgRestService.class);
 
 	private final IgSession session;
 	private final MarketsCache marketsCache;
@@ -97,11 +106,23 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public synchronized void closePosition(IPosition position) {
+	public synchronized String closePosition(IPosition position) {
 		activityCache.clear();
 
 		ClosePositionRequest request = ClosePositionRequest.forPosition(position);
-		new ClosePositionExecutor(this, request).execute();
+		ClosePositionResponse response = new ClosePositionExecutor(this, request).execute();
+		String dealReference = response.getDealReference();
+
+		// Sanity check (we expect the deal reference to be the same for the closed position)
+		if (position instanceof MarketPosition) {
+			MarketPosition market = (MarketPosition) position;
+			String expected = market.getPosition().getDealReference();
+			if (!expected.equals(dealReference)) {
+				log.error("Unexpected deal reference: " + dealReference + " (expected: " + expected + ")");
+			}
+		}
+
+		return dealReference;
 	}
 
 	@Override
@@ -111,16 +132,19 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public synchronized void closeAllPositions() {
+	public synchronized Set<String> closeAllPositions() {
 		activityCache.clear();
 
 		// List open positions
 		List<MarketPosition> positions = getPositionList();
 
 		// Close all open positions!
+		Set<String> dealReferences = new LinkedHashSet<>();
 		for (MarketPosition position : positions) {
-			closePosition(position);
+			String dealReference = closePosition(position);
+			dealReferences.add(dealReference);
 		}
+		return dealReferences;
 	}
 
 	@Override
@@ -186,16 +210,6 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public List<Activity> getActivityList(boolean latest) {
-		if (latest) {
-			activityCache.clear();
-		}
-		// Currently limiting to the past 3 months ...
-		LocalDate date = LocalDate.now().minus(Period.ofMonths(3));
-		return activityCache.get(date, () -> new GetActivityExecutor(IgRestService.this, date).execute().getActivities());
-	}
-
-	@Override
 	public com.robindrew.trading.provider.igindex.platform.rest.executor.getmarketnavigation.Markets searchMarkets(String text) {
 		return new SearchMarketsExecutor(this, text).execute().getMarkets();
 	}
@@ -206,6 +220,22 @@ public class IgRestService implements IIgRestService {
 		OpenPositionRequest request = new OpenPositionRequest(epic, direction, size, stopLoss, stopProfit);
 		OpenPositionResponse response = new OpenPositionExecutor(this, request).execute();
 		return response.getDealReference();
+	}
+
+	@Override
+	public ActivityList getActivityList(boolean latest) {
+		if (latest) {
+			activityCache.clear();
+		}
+		// Currently limiting to the past 3 months ...
+		LocalDate date = LocalDate.now().minus(Period.ofMonths(3));
+		LocalDateTime dateTime = Dates.toLocalDateTime(date);
+		return activityCache.get(date, () -> new GetActivityExecutor(IgRestService.this, dateTime).execute().getActivities());
+	}
+
+	@Override
+	public ActivityList getActivityList(LocalDateTime from) {
+		return new GetActivityExecutor(IgRestService.this, from).execute().getActivities();
 	}
 
 }

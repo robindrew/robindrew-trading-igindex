@@ -3,7 +3,6 @@ package com.robindrew.trading.provider.igindex.platform.rest.executor.getactivit
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.IgJsonObject;
 
@@ -17,8 +16,8 @@ public class GetActivityResponse extends IgJsonObject {
 		}
 	}
 
-	public List<Activity> getActivities() {
-		return ImmutableList.copyOf(activities);
+	public ActivityList getActivities() {
+		return new ActivityList(activities);
 	}
 
 }

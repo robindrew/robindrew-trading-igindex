@@ -7,7 +7,7 @@ import com.robindrew.common.json.IJson;
 import com.robindrew.trading.provider.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.HttpJsonRestExecutor;
 
-public class ClosePositionExecutor extends HttpJsonRestExecutor<Boolean> {
+public class ClosePositionExecutor extends HttpJsonRestExecutor<ClosePositionResponse> {
 
 	private final ClosePositionRequest jsonRequest;
 
@@ -34,7 +34,7 @@ public class ClosePositionExecutor extends HttpJsonRestExecutor<Boolean> {
 	}
 
 	@Override
-	public Boolean createResponse(IJson json) {
-		return true;
+	public ClosePositionResponse createResponse(IJson json) {
+		return new ClosePositionResponse(json);
 	}
 }

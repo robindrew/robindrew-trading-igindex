@@ -1,19 +1,25 @@
 package com.robindrew.trading.provider.igindex.platform.rest.executor.getactivity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
+import com.robindrew.common.date.Dates;
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.provider.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.provider.igindex.platform.rest.executor.HttpJsonRestExecutor;
 
 public class GetActivityExecutor extends HttpJsonRestExecutor<GetActivityResponse> {
 
-	private final LocalDate date;
+	private final LocalDateTime date;
 
 	public GetActivityExecutor(IIgRestService service, LocalDate date) {
+		this(service, Dates.toLocalDateTime(date));
+	}
+
+	public GetActivityExecutor(IIgRestService service, LocalDateTime date) {
 		super(service);
 		this.date = date;
 	}

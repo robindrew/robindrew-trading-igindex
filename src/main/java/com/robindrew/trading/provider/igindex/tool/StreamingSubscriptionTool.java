@@ -1,4 +1,4 @@
-package com.robindrew.trading.igindex.tool;
+package com.robindrew.trading.provider.igindex.tool;
 
 import java.io.File;
 
