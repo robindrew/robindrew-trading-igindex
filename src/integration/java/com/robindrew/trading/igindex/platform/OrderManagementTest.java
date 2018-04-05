@@ -7,16 +7,16 @@ import org.junit.Test;
 
 import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.common.util.Threads;
+import com.robindrew.trading.igindex.IgInstrument;
+import com.robindrew.trading.igindex.platform.IgCredentials;
+import com.robindrew.trading.igindex.platform.IgEnvironment;
+import com.robindrew.trading.igindex.platform.IgSession;
+import com.robindrew.trading.igindex.platform.IgTradingPlatform;
+import com.robindrew.trading.igindex.platform.rest.IIgRestService;
+import com.robindrew.trading.igindex.platform.rest.IgRestService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.position.order.PositionOrder;
-import com.robindrew.trading.provider.igindex.IgInstrument;
-import com.robindrew.trading.provider.igindex.platform.IgCredentials;
-import com.robindrew.trading.provider.igindex.platform.IgEnvironment;
-import com.robindrew.trading.provider.igindex.platform.IgSession;
-import com.robindrew.trading.provider.igindex.platform.IgTradingPlatform;
-import com.robindrew.trading.provider.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.provider.igindex.platform.rest.IgRestService;
 import com.robindrew.trading.trade.TradeDirection;
 
 public class OrderManagementTest {
