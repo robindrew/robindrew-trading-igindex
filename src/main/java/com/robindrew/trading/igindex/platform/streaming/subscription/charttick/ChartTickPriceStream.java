@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,6 +155,27 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		}
 	}
 
+	private static AtomicReference<String> cachedBid = new AtomicReference<>();
+	private static AtomicReference<String> cachedOffer = new AtomicReference<>();
+
+	private static boolean isInvalid(String text) {
+		return text == null || text.isEmpty() || text.equals("null") || text.equals("NULL");
+	}
+
+	private static String getValue(UpdateInfo update, String fieldName, AtomicReference<String> cached) {
+		String value = update.getNewValue(fieldName);
+		if (!isInvalid(value)) {
+			cached.set(value);
+			return value;
+		}
+		value = update.getOldValue(fieldName);
+		if (!isInvalid(value)) {
+			cached.set(value);
+			return value;
+		}
+		return cached.get();
+	}
+
 	private class OnUpdate {
 
 		private final int itemPos;
@@ -166,10 +188,6 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 			this.updateInfo = updateInfo;
 		}
 
-		private boolean isInvalid(String text) {
-			return text == null || text.isEmpty() || text.equals("null") || text.equals("NULL");
-		}
-
 		private long increment(String key) {
 			AtomicLong count = countMap.get(key, true);
 			return count.incrementAndGet();
@@ -180,36 +198,21 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 
 			// Extract the information we are interested in
 			String timestamp = updateInfo.getNewValue(FIELD_UTM);
-			String bid = updateInfo.getNewValue(FIELD_BID);
-			String offer = updateInfo.getNewValue(FIELD_OFR);
 
-			boolean bidInvalid = isInvalid(bid);
-			boolean offerInvalid = isInvalid(offer);
+			// Bid
+			String bid = getValue(updateInfo, FIELD_BID, cachedBid);
+			String offer = getValue(updateInfo, FIELD_OFR, cachedOffer);
 
 			// Invalid update?
-			if (isInvalid(timestamp) || (bidInvalid && offerInvalid)) {
-				log.debug("[Invalid Tick] - onUpdate(" + itemPos + ", " + itemName + ", " + updateInfo + ")");
+			if (isInvalid(timestamp) || isInvalid(bid) || isInvalid(offer)) {
+				log.info("[Invalid Tick] - onUpdate({}, {}, {})", itemName, itemPos, updateInfo);
 				return;
-			}
-
-			if (bidInvalid) {
-				bid = updateInfo.getOldValue(FIELD_BID);
-				if (isInvalid(bid)) {
-					log.debug("[Invalid Tick] - onUpdate(" + itemPos + ", " + itemName + ", " + updateInfo + ")");
-					return;
-				}
-			}
-			if (offerInvalid) {
-				offer = updateInfo.getOldValue(FIELD_OFR);
-				if (isInvalid(offer)) {
-					log.debug("[Invalid Tick] - onUpdate(" + itemPos + ", " + itemName + ", " + updateInfo + ")");
-					return;
-				}
 			}
 
 			// Enqueue tick ...
 			final ChartTick tick;
 			try {
+				log.info("[Tick] - onUpdate({}, {}, {})", itemName, itemPos, updateInfo);
 				tick = new ChartTick(getInstrument(), getPrecision(), itemName, timestamp, bid, offer);
 			} catch (Exception e) {
 				log.warn("[Invalid Tick] - onUpdate(" + itemPos + ", " + itemName + ", " + updateInfo + ")", e);
