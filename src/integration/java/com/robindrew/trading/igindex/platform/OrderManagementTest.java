@@ -43,15 +43,15 @@ public class OrderManagementTest {
 		BigDecimal tradeSize = new BigDecimal(1);
 		int stopLossDistance = 100;
 		int profitLimitDistance = 150;
-		
+
 		// Execute trade
 		IPositionOrder order = new PositionOrder(instrument, direction, tradeCurrency, tradeSize, stopLossDistance, profitLimitDistance);
 		IPosition position = platform.openPosition(order);
-		
+
 		Threads.sleep(5, TimeUnit.SECONDS);
-		
+
 		platform.closePosition(position);
-		
+
 	}
 
 }
