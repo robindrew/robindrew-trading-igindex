@@ -3,10 +3,10 @@ package com.robindrew.trading.igindex.platform.streaming.subscription.charttick;
 import java.math.BigDecimal;
 
 import com.robindrew.trading.IInstrument;
+import com.robindrew.trading.price.candle.ITickPriceCandle;
+import com.robindrew.trading.price.candle.TickPriceCandle;
 import com.robindrew.trading.price.decimal.Decimals;
 import com.robindrew.trading.price.precision.IPricePrecision;
-import com.robindrew.trading.price.tick.IPriceTick;
-import com.robindrew.trading.price.tick.PriceTick;
 
 public class ChartTick {
 
@@ -44,13 +44,13 @@ public class ChartTick {
 		return ask;
 	}
 
-	public IPriceTick toPriceTick() {
+	public ITickPriceCandle toPriceTick() {
 		BigDecimal bid = getBid();
 		BigDecimal ask = getAsk();
 		int decimalPlaces = precision.getDecimalPlaces();
 		int bidPrice = Decimals.toBigInt(bid, decimalPlaces);
 		int askPrice = Decimals.toBigInt(ask, decimalPlaces);
-		return new PriceTick(bidPrice, askPrice, getTimestamp(), decimalPlaces);
+		return new TickPriceCandle(bidPrice, askPrice, getTimestamp(), decimalPlaces);
 	}
 
 }

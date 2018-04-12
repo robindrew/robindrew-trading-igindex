@@ -26,8 +26,8 @@ import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
+import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.precision.IPricePrecision;
-import com.robindrew.trading.price.tick.IPriceTick;
 
 public class ChartTickPriceStream extends InstrumentPriceStream implements IIgInstrumentPriceStream {
 
@@ -155,14 +155,14 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		}
 	}
 
-	private static AtomicReference<String> cachedBid = new AtomicReference<>();
-	private static AtomicReference<String> cachedOffer = new AtomicReference<>();
+	private AtomicReference<String> cachedBid = new AtomicReference<>();
+	private AtomicReference<String> cachedOffer = new AtomicReference<>();
 
-	private static boolean isInvalid(String text) {
+	private boolean isInvalid(String text) {
 		return text == null || text.isEmpty() || text.equals("null") || text.equals("NULL");
 	}
 
-	private static String getValue(UpdateInfo update, String fieldName, AtomicReference<String> cached) {
+	private String getValue(UpdateInfo update, String fieldName, AtomicReference<String> cached) {
 		String value = update.getNewValue(fieldName);
 		if (!isInvalid(value)) {
 			cached.set(value);
@@ -205,14 +205,14 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 
 			// Invalid update?
 			if (isInvalid(timestamp) || isInvalid(bid) || isInvalid(offer)) {
-				log.info("[Invalid Tick] - onUpdate({}, {}, {})", itemName, itemPos, updateInfo);
+				log.debug("[Invalid Tick] - onUpdate({}, {}, {})", itemName, itemPos, updateInfo);
 				return;
 			}
 
 			// Enqueue tick ...
 			final ChartTick tick;
 			try {
-				log.info("[Tick] - onUpdate({}, {}, {})", itemName, itemPos, updateInfo);
+				log.debug("[Tick] - onUpdate({}, {}, {})", itemName, itemPos, updateInfo);
 				tick = new ChartTick(getInstrument(), getPrecision(), itemName, timestamp, bid, offer);
 			} catch (Exception e) {
 				log.warn("[Invalid Tick] - onUpdate(" + itemPos + ", " + itemName + ", " + updateInfo + ")", e);
@@ -222,8 +222,8 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 			// Consume tick
 			try {
 
-				IPriceTick next = tick.toPriceTick();
-				putNextTick(next);
+				IPriceCandle next = tick.toPriceTick();
+				putNextCandle(next);
 
 			} catch (Exception e) {
 				log.error("Error consuming tick", e);
