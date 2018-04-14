@@ -35,8 +35,13 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 
 	public static final String FIELD_BID = "BID";
 	public static final String FIELD_OFR = "OFR";
+	/** Last Traded Price. */
 	public static final String FIELD_LTP = "LTP";
+	/** Last Traded Volume. */
 	public static final String FIELD_LTV = "LTV";
+	/** Incremental Trading Volume. */
+	public static final String FIELD_TTV = "TTV";
+	/** Update Time Millis. */
 	public static final String FIELD_UTM = "UTM";
 	public static final String FIELD_DAY_OPEN_MID = "DAY_OPEN_MID";
 	public static final String FIELD_DAY_PERC_CHG_MID = "DAY_PERC_CHG_MID";
@@ -73,7 +78,7 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		try {
 			String[] items = new String[] { getSubscriptionKey(getInstrument()) };
 			String mode = "DISTINCT";
-			String[] fields = new String[] { FIELD_UTM, FIELD_BID, FIELD_OFR, FIELD_LTP, FIELD_LTV };
+			String[] fields = new String[] { FIELD_UTM, FIELD_BID, FIELD_OFR, FIELD_TTV, FIELD_LTV };
 			boolean snapshot = true;
 			this.tableInfo = new ExtendedTableInfo(items, mode, fields, snapshot);
 		} catch (SubscrException e) {
@@ -206,6 +211,11 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 			// Bid
 			String bid = getValue(updateInfo, FIELD_BID, cachedBid);
 			String offer = getValue(updateInfo, FIELD_OFR, cachedOffer);
+
+			/** Last Traded Volume. */
+			// String volume = updateInfo.getNewValue(FIELD_LTV);
+			/** Incremental Trading Volume. */
+			// String incremental = updateInfo.getNewValue(FIELD_TTV);
 
 			// Invalid update?
 			if (isInvalid(timestamp) || isInvalid(bid) || isInvalid(offer)) {
