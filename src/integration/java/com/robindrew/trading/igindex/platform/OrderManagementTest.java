@@ -8,12 +8,9 @@ import org.junit.Test;
 import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.common.util.Threads;
 import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.IgCredentials;
-import com.robindrew.trading.igindex.platform.IgEnvironment;
-import com.robindrew.trading.igindex.platform.IgSession;
-import com.robindrew.trading.igindex.platform.IgTradingPlatform;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.IgRestService;
+import com.robindrew.trading.platform.positions.IPositionService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.position.order.PositionOrder;
@@ -37,6 +34,7 @@ public class OrderManagementTest {
 		rest.login();
 
 		IgTradingPlatform platform = new IgTradingPlatform(rest);
+		IPositionService positions = platform.getPositionService();
 
 		TradeDirection direction = TradeDirection.SELL;
 		CurrencyCode tradeCurrency = CurrencyCode.GBP;
@@ -46,11 +44,11 @@ public class OrderManagementTest {
 
 		// Execute trade
 		IPositionOrder order = new PositionOrder(instrument, direction, tradeCurrency, tradeSize, stopLossDistance, profitLimitDistance);
-		IPosition position = platform.openPosition(order);
+		IPosition position = positions.openPosition(order);
 
 		Threads.sleep(5, TimeUnit.SECONDS);
 
-		platform.closePosition(position);
+		positions.closePosition(position);
 
 	}
 

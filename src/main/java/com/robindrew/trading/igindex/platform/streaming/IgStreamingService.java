@@ -14,6 +14,7 @@ import com.robindrew.common.util.Java;
 import com.robindrew.common.util.Quietly;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.platform.IgSession;
+import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.StreamingService;
 
@@ -21,11 +22,11 @@ public class IgStreamingService extends StreamingService {
 
 	private static final Logger log = LoggerFactory.getLogger(IgStreamingService.class);
 
-	private final IgSession session;
+	private final IIgRestService rest;
 	private final AtomicReference<IgStreamingServiceConnection> serviceConnection = new AtomicReference<>();
 
-	public IgStreamingService(IgSession session) {
-		this.session = Check.notNull("session", session);
+	public IgStreamingService(IIgRestService rest) {
+		this.rest = Check.notNull("rest", rest);
 	}
 
 	@Override
@@ -77,6 +78,7 @@ public class IgStreamingService extends StreamingService {
 
 			// Connect
 			log.info("Connecting ...");
+			IgSession session = rest.getSession();
 			IgStreamingServiceConnection connection = new IgStreamingServiceConnection(session);
 			connection.connect(new Listener(connection.getInfo()));
 			serviceConnection.set(connection);

@@ -48,8 +48,6 @@ import com.robindrew.trading.igindex.platform.rest.executor.openposition.OpenPos
 import com.robindrew.trading.igindex.platform.rest.executor.openposition.OpenPositionRequest;
 import com.robindrew.trading.igindex.platform.rest.executor.openposition.OpenPositionResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.searchMarkets.SearchMarketsExecutor;
-import com.robindrew.trading.igindex.platform.streaming.IgStreamingService;
-import com.robindrew.trading.platform.streaming.IStreamingService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 
@@ -61,7 +59,6 @@ public class IgRestService implements IIgRestService {
 	private final MarketsCache marketsCache;
 	private final IMarketNavigationCache marketNavigationCache;
 	private final ActivityCache activityCache;
-	private final IStreamingService streamingService;
 
 	public IgRestService(IgSession session, IMarketNavigationCache marketNavigationCache) {
 		if (session == null) {
@@ -71,7 +68,6 @@ public class IgRestService implements IIgRestService {
 		this.marketsCache = new MarketsCache();
 		this.marketNavigationCache = marketNavigationCache;
 		this.activityCache = new ActivityCache();
-		this.streamingService = new IgStreamingService(session);
 	}
 
 	public IgRestService(IgSession session) {
@@ -81,11 +77,6 @@ public class IgRestService implements IIgRestService {
 	@Override
 	public IgSession getSession() {
 		return session;
-	}
-
-	@Override
-	public IStreamingService getStreamingService() {
-		return streamingService;
 	}
 
 	@Override

@@ -16,7 +16,6 @@ import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.Markets;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
 import com.robindrew.trading.igindex.platform.rest.executor.getpricelist.PriceList;
 import com.robindrew.trading.igindex.platform.rest.executor.login.LoginDetails;
-import com.robindrew.trading.platform.streaming.IStreamingService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 
@@ -41,8 +40,6 @@ public interface IIgRestService {
 	String closePosition(IPosition position);
 
 	Set<String> closeAllPositions();
-
-	IStreamingService getStreamingService();
 
 	Markets getMarkets(String epic, boolean latest);
 
