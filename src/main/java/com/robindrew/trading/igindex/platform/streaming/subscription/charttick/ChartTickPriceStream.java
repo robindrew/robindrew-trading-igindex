@@ -73,7 +73,7 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		try {
 			String[] items = new String[] { getSubscriptionKey(getInstrument()) };
 			String mode = "DISTINCT";
-			String[] fields = new String[] { FIELD_UTM, FIELD_BID, FIELD_OFR };
+			String[] fields = new String[] { FIELD_UTM, FIELD_BID, FIELD_OFR, FIELD_LTP, FIELD_LTV };
 			boolean snapshot = true;
 			this.tableInfo = new ExtendedTableInfo(items, mode, fields, snapshot);
 		} catch (SubscrException e) {
@@ -89,10 +89,12 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		return "CHART:" + instrument.getName() + ":TICK";
 	}
 
+	@Override
 	public ExtendedTableInfo getExtendedTableInfo() {
 		return tableInfo;
 	}
 
+	@Override
 	public HandyTableListener getHandyTableListener() {
 		return tableListener;
 	}
@@ -110,6 +112,7 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		eventConsumer.start();
 	}
 
+	@Override
 	public SubscribedTableKey getSubscribedTableKey() {
 		if (key == null) {
 			throw new IllegalStateException("key not set");
@@ -117,6 +120,7 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 		return key;
 	}
 
+	@Override
 	public void setKey(SubscribedTableKey key) {
 		this.key = Check.notNull("key", key);
 	}
