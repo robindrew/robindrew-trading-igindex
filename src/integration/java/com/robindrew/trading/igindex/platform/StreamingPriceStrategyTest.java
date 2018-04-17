@@ -21,9 +21,9 @@ public class StreamingPriceStrategyTest {
 
 		IgInstrument instrument = IgInstrument.SPOT_USD_JPY;
 
-		String apiKey = "9d07a6a968efc5721f6787ff206d463d2676b095";
-		String username = "robindrew2002";
-		String password = "Lvigux123";
+		String apiKey = System.getProperty("apiKey");
+		String username = System.getProperty("username");
+		String password = System.getProperty("password");
 
 		IgCredentials credentials = new IgCredentials(apiKey, username, password);
 		IgEnvironment environment = IgEnvironment.DEMO;
@@ -32,7 +32,7 @@ public class StreamingPriceStrategyTest {
 		rest.login();
 
 		IgTradingPlatform platform = new IgTradingPlatform(rest);
-		
+
 		TestTradingStrategy strategy = new TestTradingStrategy(platform, instrument);
 		strategy.start();
 
@@ -46,9 +46,9 @@ public class StreamingPriceStrategyTest {
 
 		// Register all the sinks
 		priceStream.register(strategy);
-		
+
 		streamingService.connect();
-		
+
 		Threads.sleepForever();
 	}
 
