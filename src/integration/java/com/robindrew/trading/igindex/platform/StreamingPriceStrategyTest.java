@@ -37,7 +37,7 @@ public class StreamingPriceStrategyTest {
 		strategy.start();
 
 		// Create the underlying stream
-		ChartTickPriceStream priceStream = new ChartTickPriceStream(instrument, new PricePrecision(2, 900, 90000));
+		ChartTickPriceStream priceStream = new ChartTickPriceStream(instrument, new PricePrecision(2));
 		priceStream.start();
 
 		// Register the stream to make it available through the platform

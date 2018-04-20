@@ -17,7 +17,7 @@ public class StreamingSubscriptionTool {
 		// Configuration
 		String priceDirectory = "c:/temp/prices";
 		IInstrument instrument = IgInstrument.SPOT_BITCOIN;
-		IPricePrecision precision = new PricePrecision(2, 900, 90000);
+		IPricePrecision precision = new PricePrecision(2);
 
 		// Create the stream
 		try (ChartTickPriceStream priceStream = new ChartTickPriceStream(instrument, precision)) {
