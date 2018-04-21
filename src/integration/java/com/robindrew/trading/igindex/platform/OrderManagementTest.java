@@ -10,6 +10,8 @@ import com.robindrew.common.util.Threads;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.IgRestService;
+import com.robindrew.trading.log.ITransactionLog;
+import com.robindrew.trading.log.StubTransactionLog;
 import com.robindrew.trading.platform.positions.IPositionService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
@@ -30,7 +32,8 @@ public class OrderManagementTest {
 		IgCredentials credentials = new IgCredentials(apiKey, username, password);
 		IgEnvironment environment = IgEnvironment.DEMO;
 		IgSession session = new IgSession(credentials, environment);
-		IIgRestService rest = new IgRestService(session);
+		ITransactionLog log = new StubTransactionLog();
+		IIgRestService rest = new IgRestService(session, log);
 		rest.login();
 
 		IgTradingPlatform platform = new IgTradingPlatform(rest);

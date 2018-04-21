@@ -48,6 +48,7 @@ import com.robindrew.trading.igindex.platform.rest.executor.openposition.OpenPos
 import com.robindrew.trading.igindex.platform.rest.executor.openposition.OpenPositionRequest;
 import com.robindrew.trading.igindex.platform.rest.executor.openposition.OpenPositionResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.searchMarkets.SearchMarketsExecutor;
+import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 
@@ -59,24 +60,34 @@ public class IgRestService implements IIgRestService {
 	private final MarketsCache marketsCache;
 	private final IMarketNavigationCache marketNavigationCache;
 	private final ActivityCache activityCache;
+	private final ITransactionLog transactionLog;
 
-	public IgRestService(IgSession session, IMarketNavigationCache marketNavigationCache) {
+	public IgRestService(IgSession session, ITransactionLog transactionLog) {
 		if (session == null) {
 			throw new NullPointerException("session");
 		}
+		if (transactionLog == null) {
+			throw new NullPointerException("transactionLog");
+		}
 		this.session = session;
+		this.transactionLog = transactionLog;
 		this.marketsCache = new MarketsCache();
-		this.marketNavigationCache = marketNavigationCache;
+		this.marketNavigationCache = new MarketNavigationCache();
 		this.activityCache = new ActivityCache();
-	}
-
-	public IgRestService(IgSession session) {
-		this(session, new MarketNavigationCache());
 	}
 
 	@Override
 	public IgSession getSession() {
 		return session;
+	}
+
+	public IMarketNavigationCache getMarketNavigationCache() {
+		return marketNavigationCache;
+	}
+
+	@Override
+	public ITransactionLog getTransactionLog() {
+		return transactionLog;
 	}
 
 	@Override
@@ -195,9 +206,9 @@ public class IgRestService implements IIgRestService {
 	@Override
 	public MarketNavigation getMarketNavigation(int id, boolean latest) {
 		if (latest) {
-			marketNavigationCache.remove(id);
+			getMarketNavigationCache().remove(id);
 		}
-		return marketNavigationCache.get(id, () -> new GetMarketNavigationExecutor(IgRestService.this, id).execute().getMarketNavigation());
+		return getMarketNavigationCache().get(id, () -> new GetMarketNavigationExecutor(IgRestService.this, id).execute().getMarketNavigation());
 	}
 
 	@Override
