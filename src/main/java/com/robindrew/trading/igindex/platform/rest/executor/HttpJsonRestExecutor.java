@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.robindrew.common.json.Gsons;
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.text.LineBuilder;
+import com.robindrew.common.text.Strings;
 import com.robindrew.common.util.Java;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.IgSession;
@@ -124,7 +125,7 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 				if (response.getStatusLine().getStatusCode() != 200) {
 					throw new ServiceNotAvailableException("Response: '" + response.getStatusLine().toString() + "', Content: " + content);
 				}
-				logResponse(response, content);
+				logResponse(request, response, content);
 
 				// Get Account Security Token
 				String token = getHeader(response, "X-SECURITY-TOKEN");
@@ -209,7 +210,9 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 		return true;
 	}
 
-	private void logResponse(HttpResponse response, String json) {
+	private void logResponse(HttpUriRequest request, HttpResponse response, String json) {
+
+		// HTTP response
 		LineBuilder text = new LineBuilder();
 		text.appendLine(response.getStatusLine());
 		for (Header header : response.getAllHeaders()) {
@@ -218,8 +221,13 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 		text.appendLine();
 		text.append(json);
 		if (logResponse()) {
-			log.debug("[HTTP Response]\n" + text);
+			log.info("[HTTP Response]\n{}", text);
 		}
+
+		// Transaction Log
+		json = Strings.json(json);
+		System.out.println(json);
+		service.getTransactionLog().log(request.getURI().toString(), json);
 	}
 
 	private void logRequest(HttpUriRequest request) {
