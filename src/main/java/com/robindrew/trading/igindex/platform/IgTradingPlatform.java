@@ -3,12 +3,13 @@ package com.robindrew.trading.igindex.platform;
 import static com.robindrew.trading.igindex.platform.rest.executor.getaccounts.AccountType.SPREADBET;
 
 import com.robindrew.common.util.Check;
+import com.robindrew.trading.igindex.IIgInstrument;
 import com.robindrew.trading.igindex.platform.position.IgPositionService;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.streaming.IgStreamingService;
 import com.robindrew.trading.platform.TradingPlatform;
 
-public class IgTradingPlatform extends TradingPlatform implements IIgTradingPlatform {
+public class IgTradingPlatform extends TradingPlatform<IIgInstrument> implements IIgTradingPlatform {
 
 	private final IIgRestService rest;
 	private final IgPositionService position;

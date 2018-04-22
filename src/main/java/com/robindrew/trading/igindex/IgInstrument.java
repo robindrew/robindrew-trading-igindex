@@ -22,8 +22,10 @@ import static com.robindrew.trading.Instruments.US_CRUDE_OIL;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instrument;
 import com.robindrew.trading.InstrumentType;
+import com.robindrew.trading.price.precision.IPricePrecision;
+import com.robindrew.trading.price.precision.PricePrecision;
 
-public class IgInstrument extends Instrument {
+public class IgInstrument extends Instrument implements IIgInstrument {
 
 	/** AUD/USD. */
 	public static final IgInstrument SPOT_AUD_USD = new IgInstrument("CS.D.AUDUSD.TODAY.IP", AUD_USD);
@@ -73,6 +75,8 @@ public class IgInstrument extends Instrument {
 	/** SILVER. */
 	public static final IgInstrument SPOT_SILVER = new IgInstrument("CS.D.USCSI.TODAY.IP", SILVER);
 
+	private final IPricePrecision precision = new PricePrecision(2);
+
 	public IgInstrument(String epic, IInstrument underlying) {
 		super(epic, underlying);
 	}
@@ -83,6 +87,11 @@ public class IgInstrument extends Instrument {
 
 	public String getEpic() {
 		return getName();
+	}
+
+	@Override
+	public IPricePrecision getPrecision() {
+		return precision;
 	}
 
 }

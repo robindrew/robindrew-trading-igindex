@@ -12,13 +12,14 @@ import com.lightstreamer.ls_client.PushServerException;
 import com.robindrew.common.util.Check;
 import com.robindrew.common.util.Java;
 import com.robindrew.common.util.Quietly;
-import com.robindrew.trading.IInstrument;
+import com.robindrew.trading.igindex.IIgInstrument;
 import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
+import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.StreamingService;
 
-public class IgStreamingService extends StreamingService {
+public class IgStreamingService extends StreamingService<IIgInstrument> {
 
 	private static final Logger log = LoggerFactory.getLogger(IgStreamingService.class);
 
@@ -35,27 +36,36 @@ public class IgStreamingService extends StreamingService {
 	}
 
 	@Override
-	public synchronized void register(IInstrumentPriceStream stream) {
-		super.registerStream(stream);
+	public boolean subscribe(IIgInstrument instrument) {
+		if (isSubscribed(instrument)) {
+			return true;
+		}
+
+		// Create the underlying stream
+		ChartTickPriceStream stream = new ChartTickPriceStream(instrument);
+		registerStream(stream);
+		stream.start();
 
 		// Subscribe
 		IgStreamingServiceConnection connection = serviceConnection.get();
 		if (connection != null) {
 			connection.subscribe(stream);
 		}
+		return true;
 	}
 
 	@Override
-	public void unregister(IInstrument instrument) {
+	public boolean unsubscribe(IIgInstrument instrument) {
 		Check.notNull("instrument", instrument);
 
-		IInstrumentPriceStream stream = getPriceStream(instrument);
-		super.unregisterStream(stream);
+		IInstrumentPriceStream<IIgInstrument> stream = getPriceStream(instrument);
+		super.unregisterStream(stream.getInstrument());
 
 		IgStreamingServiceConnection connection = serviceConnection.get();
 		if (connection != null) {
 			connection.unsubscribe(stream);
 		}
+		return true;
 	}
 
 	@Override
@@ -84,7 +94,7 @@ public class IgStreamingService extends StreamingService {
 			serviceConnection.set(connection);
 
 			// Subscribe existing subscriptions
-			for (IInstrumentPriceStream stream : getPriceStreams()) {
+			for (IInstrumentPriceStream<IIgInstrument> stream : getPriceStreams()) {
 				connection.subscribe(stream);
 			}
 

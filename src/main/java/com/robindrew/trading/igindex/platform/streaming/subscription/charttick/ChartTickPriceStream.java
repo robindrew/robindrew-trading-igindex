@@ -23,13 +23,14 @@ import com.robindrew.common.concurrent.LoopingEventConsumerThread;
 import com.robindrew.common.date.Delay;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.IInstrument;
+import com.robindrew.trading.igindex.IIgInstrument;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.precision.IPricePrecision;
 
-public class ChartTickPriceStream extends InstrumentPriceStream implements IIgInstrumentPriceStream {
+public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> implements IIgInstrumentPriceStream {
 
 	private static final Logger log = LoggerFactory.getLogger(ChartTickPriceStream.class);
 
@@ -63,9 +64,9 @@ public class ChartTickPriceStream extends InstrumentPriceStream implements IIgIn
 	private final ExtendedTableInfo tableInfo;
 	private volatile SubscribedTableKey key = null;
 
-	public ChartTickPriceStream(IInstrument instrument, IPricePrecision precision) {
+	public ChartTickPriceStream(IIgInstrument instrument) {
 		super(instrument);
-		this.precision = Check.notNull("precision", precision);
+		this.precision = instrument.getPrecision();
 
 		// Create the event consumer
 		String threadName = "ChartTickConsumer[" + getInstrument().getName() + "]";

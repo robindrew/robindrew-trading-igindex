@@ -4,16 +4,16 @@ import org.junit.Test;
 
 import com.robindrew.common.util.Threads;
 import com.robindrew.trading.IInstrument;
+import com.robindrew.trading.igindex.IIgInstrument;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.IgRestService;
-import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
+import com.robindrew.trading.igindex.platform.streaming.IgStreamingService;
 import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.log.StubTransactionLog;
 import com.robindrew.trading.platform.ITradingPlatform;
-import com.robindrew.trading.platform.streaming.IStreamingService;
+import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
-import com.robindrew.trading.price.precision.PricePrecision;
 import com.robindrew.trading.strategy.LatestPriceTradingStrategy;
 
 public class StreamingPriceStrategyTest {
@@ -39,18 +39,15 @@ public class StreamingPriceStrategyTest {
 		TestTradingStrategy strategy = new TestTradingStrategy(platform, instrument);
 		strategy.start();
 
-		// Create the underlying stream
-		ChartTickPriceStream priceStream = new ChartTickPriceStream(instrument, new PricePrecision(2));
-		priceStream.start();
-
 		// Register the stream to make it available through the platform
-		IStreamingService streamingService = platform.getStreamingService();
-		streamingService.register(priceStream);
+		IgStreamingService streaming = platform.getStreamingService();
+		IInstrumentPriceStream<IIgInstrument> priceStream = streaming.getPriceStream(instrument);
 
 		// Register all the sinks
 		priceStream.register(strategy);
 
-		streamingService.connect();
+		// Connect!
+		streaming.connect();
 
 		Threads.sleepForever();
 	}

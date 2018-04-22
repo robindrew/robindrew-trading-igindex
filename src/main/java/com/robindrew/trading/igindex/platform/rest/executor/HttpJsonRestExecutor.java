@@ -226,7 +226,6 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 
 		// Transaction Log
 		json = Strings.json(json);
-		System.out.println(json);
 		service.getTransactionLog().log(request.getURI().toString(), json);
 	}
 
