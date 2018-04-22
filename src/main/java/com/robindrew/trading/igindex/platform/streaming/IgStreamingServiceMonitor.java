@@ -10,7 +10,6 @@ import com.robindrew.common.date.UnitTime;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.igindex.platform.IgTradingPlatform;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.platform.streaming.IStreamingService;
 
 public class IgStreamingServiceMonitor implements AutoCloseable {
 
@@ -39,7 +38,7 @@ public class IgStreamingServiceMonitor implements AutoCloseable {
 		@Override
 		public void run() {
 			try {
-				IStreamingService streaming = platform.getStreamingService();
+				IgStreamingService streaming = platform.getStreamingService();
 				if (!streaming.isConnected()) {
 					IIgRestService rest = platform.getRestService();
 

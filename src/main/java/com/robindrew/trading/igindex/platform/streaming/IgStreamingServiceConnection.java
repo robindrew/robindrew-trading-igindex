@@ -9,6 +9,7 @@ import com.lightstreamer.ls_client.ExtendedTableInfo;
 import com.lightstreamer.ls_client.HandyTableListener;
 import com.lightstreamer.ls_client.LSClient;
 import com.lightstreamer.ls_client.SubscribedTableKey;
+import com.robindrew.trading.igindex.IIgInstrument;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
@@ -57,7 +58,7 @@ public class IgStreamingServiceConnection implements AutoCloseable {
 		}
 	}
 
-	public void subscribe(IInstrumentPriceStream stream) {
+	public void subscribe(IInstrumentPriceStream<IIgInstrument> stream) {
 		if (stream instanceof IIgInstrumentPriceStream) {
 			subscribe((IIgInstrumentPriceStream) stream);
 		} else {
@@ -65,7 +66,7 @@ public class IgStreamingServiceConnection implements AutoCloseable {
 		}
 	}
 
-	public void unsubscribe(IInstrumentPriceStream stream) {
+	public void unsubscribe(IInstrumentPriceStream<IIgInstrument> stream) {
 		if (stream instanceof IIgInstrumentPriceStream) {
 			unsubscribe((IIgInstrumentPriceStream) stream);
 		} else {

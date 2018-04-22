@@ -11,7 +11,6 @@ import com.robindrew.trading.igindex.platform.rest.IgRestService;
 import com.robindrew.trading.igindex.platform.streaming.IgStreamingService;
 import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.log.StubTransactionLog;
-import com.robindrew.trading.platform.ITradingPlatform;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.strategy.LatestPriceTradingStrategy;
@@ -52,9 +51,9 @@ public class StreamingPriceStrategyTest {
 		Threads.sleepForever();
 	}
 
-	class TestTradingStrategy extends LatestPriceTradingStrategy {
+	class TestTradingStrategy extends LatestPriceTradingStrategy<IIgInstrument> {
 
-		public TestTradingStrategy(ITradingPlatform platform, IInstrument instrument) {
+		public TestTradingStrategy(IgTradingPlatform platform, IInstrument instrument) {
 			super("TestTradingStrategy", platform, instrument);
 		}
 
