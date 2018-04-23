@@ -15,9 +15,15 @@ import com.robindrew.common.util.Quietly;
 import com.robindrew.trading.igindex.IIgInstrument;
 import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.Markets;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.Snapshot;
 import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.StreamingService;
+import com.robindrew.trading.price.candle.ITickPriceCandle;
+import com.robindrew.trading.price.candle.TickPriceCandle;
+import com.robindrew.trading.price.decimal.Decimal;
+import com.robindrew.trading.price.decimal.IDecimal;
 
 public class IgStreamingService extends StreamingService<IIgInstrument> {
 
@@ -41,8 +47,13 @@ public class IgStreamingService extends StreamingService<IIgInstrument> {
 			return true;
 		}
 
+		// Initialise by getting the latest price
+		ITickPriceCandle candle = getLatestPrice(instrument);
+
 		// Create the underlying stream
 		ChartTickPriceStream stream = new ChartTickPriceStream(instrument);
+		stream.getPrice().update(candle);
+
 		registerStream(stream);
 		stream.start();
 
@@ -52,6 +63,16 @@ public class IgStreamingService extends StreamingService<IIgInstrument> {
 			connection.subscribe(stream);
 		}
 		return true;
+	}
+
+	private ITickPriceCandle getLatestPrice(IIgInstrument instrument) {
+		int decimalPlaces = instrument.getPrecision().getDecimalPlaces();
+		Markets markets = rest.getMarkets(instrument.getEpic(), true);
+		Snapshot snapshot = markets.getSnapshot();
+		IDecimal bid = new Decimal(snapshot.getBid(), decimalPlaces);
+		IDecimal ask = new Decimal(snapshot.getOffer(), decimalPlaces);
+		long timestamp = System.currentTimeMillis();
+		return new TickPriceCandle(bid.getValue(), ask.getValue(), timestamp, decimalPlaces);
 	}
 
 	@Override

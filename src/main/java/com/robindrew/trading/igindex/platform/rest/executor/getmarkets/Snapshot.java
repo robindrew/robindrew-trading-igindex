@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketStatus;
+import com.robindrew.trading.price.Mid;
 
 public class Snapshot extends IgJsonObject {
 
@@ -68,7 +69,7 @@ public class Snapshot extends IgJsonObject {
 	}
 
 	public BigDecimal getMid() {
-		return getBid().add(getSpread().divide(new BigDecimal(2)));
+		return Mid.getMid(getBid(), getOffer());
 	}
 
 	public BigDecimal getHigh() {

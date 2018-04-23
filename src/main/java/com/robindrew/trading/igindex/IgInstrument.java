@@ -10,14 +10,14 @@ import static com.robindrew.trading.Instruments.EUR_JPY;
 import static com.robindrew.trading.Instruments.EUR_USD;
 import static com.robindrew.trading.Instruments.FTSE_100;
 import static com.robindrew.trading.Instruments.GBP_USD;
-import static com.robindrew.trading.Instruments.GOLD;
 import static com.robindrew.trading.Instruments.LITECOIN;
 import static com.robindrew.trading.Instruments.RIPPLE;
-import static com.robindrew.trading.Instruments.SILVER;
 import static com.robindrew.trading.Instruments.SP_500;
 import static com.robindrew.trading.Instruments.USD_CHF;
 import static com.robindrew.trading.Instruments.USD_JPY;
 import static com.robindrew.trading.Instruments.US_CRUDE_OIL;
+import static com.robindrew.trading.Instruments.XAG_USD;
+import static com.robindrew.trading.Instruments.XAU_USD;
 
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.Instrument;
@@ -71,9 +71,9 @@ public class IgInstrument extends Instrument implements IIgInstrument {
 	public static final IgInstrument SPOT_BRENT_CRUDE = new IgInstrument("CC.D.LCO.USS.IP", BRENT_CRUDE_OIL);
 
 	/** GOLD. */
-	public static final IgInstrument SPOT_GOLD = new IgInstrument("CS.D.USCGC.TODAY.IP", GOLD);
+	public static final IgInstrument SPOT_GOLD = new IgInstrument("CS.D.USCGC.TODAY.IP", XAU_USD);
 	/** SILVER. */
-	public static final IgInstrument SPOT_SILVER = new IgInstrument("CS.D.USCSI.TODAY.IP", SILVER);
+	public static final IgInstrument SPOT_SILVER = new IgInstrument("CS.D.USCSI.TODAY.IP", XAG_USD);
 
 	private final IPricePrecision precision = new PricePrecision(2);
 
@@ -85,6 +85,7 @@ public class IgInstrument extends Instrument implements IIgInstrument {
 		super(epic, type);
 	}
 
+	@Override
 	public String getEpic() {
 		return getName();
 	}

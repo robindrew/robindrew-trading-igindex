@@ -221,7 +221,7 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 		text.appendLine();
 		text.append(json);
 		if (logResponse()) {
-			log.info("[HTTP Response]\n{}", text);
+			log.debug("[HTTP Response]\n{}", text);
 		}
 
 		// Transaction Log
