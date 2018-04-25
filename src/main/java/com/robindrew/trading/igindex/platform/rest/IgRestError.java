@@ -14,8 +14,8 @@ public class IgRestError {
 
 	private static final Logger log = LoggerFactory.getLogger(IgRestError.class);
 
-	public static Optional<IgRestError> getRestError(IJson object) {
-		String errorCode = object.get("errorCode", true);
+	public static Optional<IgRestError> getRestError(IJson json) {
+		String errorCode = json.get("errorCode", true);
 		if (errorCode == null) {
 			return empty();
 		}

@@ -9,9 +9,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 import com.robindrew.common.date.Dates;
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class GetActivityExecutor extends HttpJsonRestExecutor<GetActivityResponse> {
+public class GetActivityExecutor extends IgRestExecutor<GetActivityResponse> {
 
 	private final LocalDateTime date;
 

@@ -6,9 +6,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class GetPriceListExecutor extends HttpJsonRestExecutor<GetPriceListResponse> {
+public class GetPriceListExecutor extends IgRestExecutor<GetPriceListResponse> {
 
 	private final GetPriceListRequest request;
 

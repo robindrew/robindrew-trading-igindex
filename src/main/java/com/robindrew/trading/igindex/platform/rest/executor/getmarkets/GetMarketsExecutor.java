@@ -7,9 +7,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class GetMarketsExecutor extends HttpJsonRestExecutor<GetMarketsResponse> {
+public class GetMarketsExecutor extends IgRestExecutor<GetMarketsResponse> {
 
 	private final String epic;
 

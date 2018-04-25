@@ -1,8 +1,5 @@
 package com.robindrew.trading.igindex.platform.rest.executor;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
@@ -14,43 +11,35 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
-import com.google.common.base.Stopwatch;
-import com.google.common.io.CharStreams;
 import com.google.gson.Gson;
 import com.robindrew.common.json.Gsons;
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.text.LineBuilder;
 import com.robindrew.common.text.Strings;
-import com.robindrew.common.util.Java;
+import com.robindrew.trading.httpclient.HttpClientException;
+import com.robindrew.trading.httpclient.HttpClientExecutor;
+import com.robindrew.trading.httpclient.HttpClients;
+import com.robindrew.trading.httpclient.HttpRetryException;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.IgRestError;
+import com.robindrew.trading.log.ITransactionLog;
 
-public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R> {
+public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 
-	private static final Logger log = LoggerFactory.getLogger(HttpJsonRestExecutor.class);
+	private static final Logger log = LoggerFactory.getLogger(IgRestExecutor.class);
 
 	private final IIgRestService service;
 
-	protected HttpJsonRestExecutor(IIgRestService service) {
+	protected IgRestExecutor(IIgRestService service) {
 		if (service == null) {
 			throw new NullPointerException("service");
 		}
 		this.service = service;
-	}
-
-	protected int getRetryAttemptLimit() {
-		return 1;
-	}
-
-	protected boolean isLoginAttempt() {
-		return false;
 	}
 
 	protected boolean logRequest() {
@@ -61,9 +50,20 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 		return true;
 	}
 
-	@Override
+	protected int getRetryAttemptLimit() {
+		return 1;
+	}
+
+	protected ITransactionLog getTransactionLog() {
+		return service.getTransactionLog();
+	}
+
 	public IgSession getSession() {
 		return service.getSession();
+	}
+
+	protected boolean isLoginAttempt() {
+		return false;
 	}
 
 	protected String getUrl(String path) {
@@ -104,110 +104,79 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 		}
 	}
 
-	@Override
-	public final R execute() {
-		log.info("[Executing] " + getName());
-		Stopwatch timer = Stopwatch.createStarted();
-
-		HttpUriRequest request = createRequest();
-		int retryAttemptCount = 0;
-
-		try {
-			while (true) {
-
-				// Create a client
-				HttpClient client = HttpClientBuilder.create().build();
-
-				// Execute the request
-				logRequest(request);
-				HttpResponse response = client.execute(request);
-				String content = getContent(response.getEntity());
-				if (response.getStatusLine().getStatusCode() != 200) {
-					throw new ServiceNotAvailableException("Response: '" + response.getStatusLine().toString() + "', Content: " + content);
-				}
-				logResponse(request, response, content);
-
-				// Get Account Security Token
-				String token = getHeader(response, "X-SECURITY-TOKEN");
-				if (token != null) {
-					getSession().setAccountSecurityToken(token);
-				}
-
-				// Get Client Security Token
-				token = getHeader(response, "CST");
-				if (token != null) {
-					getSession().setClientSecurityToken(token);
-				}
-
-				// Response JSON Content
-				IJson json = Gsons.parseJson(content);
-
-				// Do we retry if the request failed?
-				if (retryRequest(request, json, retryAttemptCount)) {
-					retryAttemptCount++;
-
-					// Create a new request, as the login details may have changed
-					request = createRequest();
-					continue;
-				}
-
-				// The response should only be allowed out if the status is OK
-				int statusCode = response.getStatusLine().getStatusCode();
-				if (statusCode != 200) {
-					throw new IgException("Status code not OK: " + statusCode);
-				}
-
-				timer.stop();
-				log.info("[Executed] " + getName() + " in " + timer);
-				return createResponse(json);
-			}
-
-		} catch (Exception e) {
-			throw new IgException("Failed to execute request: " + request.getRequestLine(), e);
-		}
+	protected HttpResponse execute(HttpClient client, HttpUriRequest request) throws Exception {
+		logRequest(request);
+		return super.execute(client, request);
 	}
 
-	public String getName() {
-		String name = getClass().getSimpleName();
-		if (name.endsWith("Executor")) {
-			name = name.substring(0, name.indexOf("Executor"));
+	protected R handleResponse(HttpUriRequest request, HttpResponse response) {
+
+		// Get Account Security Token
+		String token = HttpClients.getHeader(response, "X-SECURITY-TOKEN");
+		if (token != null) {
+			getSession().setAccountSecurityToken(token);
 		}
-		return name;
+
+		// Get Client Security Token
+		token = HttpClients.getHeader(response, "CST");
+		if (token != null) {
+			getSession().setClientSecurityToken(token);
+		}
+
+		// Failed!
+		if (response.getStatusLine().getStatusCode() != 200) {
+			throw getFailureException(request, response);
+		}
+
+		// Parse the JSON
+		String content = HttpClients.getTextContent(response.getEntity());
+		logResponse(request, response, content);
+		IJson json = Gsons.parseJson(content);
+
+		// Create the response
+		return createResponse(json);
 	}
 
-	private boolean retryRequest(HttpUriRequest request, IJson object, int retryAttemptCount) {
-		Optional<IgRestError> errorCode = IgRestError.getRestError(object);
+	private HttpClientException getFailureException(HttpUriRequest request, HttpResponse response) {
+
+		// Check the content
+		HttpEntity entity = response.getEntity();
+		if (entity == null) {
+			throw new HttpClientException("Entity content missing");
+		}
+
+		// Parse the JSON
+		String content = HttpClients.getTextContent(response.getEntity());
+		IJson json = Gsons.parseJson(content);
+
+		// Check for the error code
+		Optional<IgRestError> errorCode = IgRestError.getRestError(json);
 		if (!errorCode.isPresent()) {
-			return false;
+			return new HttpClientException("Response content: " + content);
 		}
+
 		IgRestError code = errorCode.get();
 		log.warn("[HTTP Error] " + code);
 
-		// We limit the number of retries ...
-		if (retryAttemptCount > getRetryAttemptLimit()) {
-			throw new IgException("Invalid request: " + request.getRequestLine() + " -> " + code);
-		}
-
 		// We only attempt to retry if not logged in
 		if (!code.isLoginInvalid()) {
-			throw new IgException("Invalid request: " + request.getRequestLine() + " -> " + code);
+			return new HttpClientException("Invalid request: " + request.getRequestLine() + " -> " + code);
 		}
 
 		// Only attempt login if this is not already an attempt!
 		if (isLoginAttempt()) {
-			throw new IgException("Invalid request: " + request.getRequestLine() + " -> " + code);
+			return new HttpClientException("Invalid request: " + request.getRequestLine() + " -> " + code);
 		}
 
 		// Login!
 		try {
 			service.login();
 		} catch (IgException e) {
-			throw new IgException("Invalid request: " + request.getRequestLine() + " -> " + code, e);
+			return new HttpClientException("Invalid request: " + request.getRequestLine() + " -> " + code, e);
 		}
 
 		// Retry!
-		log.warn("[HTTP Retry] Attempt #" + retryAttemptCount);
-		return true;
+		return new HttpRetryException("Logged in");
 	}
 
 	private void logResponse(HttpUriRequest request, HttpResponse response, String json) {
@@ -226,7 +195,7 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 
 		// Transaction Log
 		json = Strings.json(json);
-		service.getTransactionLog().log(request.getURI().toString(), json);
+		getTransactionLog().log(request.getURI().toString(), json);
 	}
 
 	private void logRequest(HttpUriRequest request) {
@@ -238,7 +207,7 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 		if (request instanceof HttpEntityEnclosingRequestBase) {
 			HttpEntityEnclosingRequestBase base = (HttpEntityEnclosingRequestBase) request;
 			text.appendLine();
-			text.append(getContent(base.getEntity()));
+			text.append(HttpClients.getTextContent(base.getEntity()));
 		}
 		if (logRequest()) {
 			log.debug("[HTTP Request]\n" + text);
@@ -250,33 +219,12 @@ public abstract class HttpJsonRestExecutor<R> implements IHttpJsonRestExecutor<R
 			String json = (jsonObject instanceof String) ? jsonObject.toString() : new Gson().toJson(jsonObject);
 			request.setEntity(new StringEntity(json));
 		} catch (UnsupportedEncodingException e) {
-			throw new IgException(e);
+			throw new HttpClientException(e);
 		}
 	}
 
-	protected String getContent(HttpEntity entity) {
-		try {
-			InputStream stream = entity.getContent();
-			if (stream == null) {
-				return "";
-			}
-			return CharStreams.toString(new InputStreamReader(stream, Charsets.UTF_8));
-		} catch (IOException e) {
-			throw Java.propagate(e);
-		}
-	}
+	protected abstract int getRequestVersion();
 
-	protected String getHeader(HttpResponse response, String name) {
-		Header[] headers = response.getHeaders(name);
-		if (headers != null) {
-			for (Header header : headers) {
-				String value = header.getValue();
-				if (value != null && !value.isEmpty()) {
-					return value;
-				}
-			}
-		}
-		return null;
-	}
+	protected abstract R createResponse(IJson json);
 
 }

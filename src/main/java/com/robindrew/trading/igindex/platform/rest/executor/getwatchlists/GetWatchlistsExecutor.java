@@ -5,9 +5,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class GetWatchlistsExecutor extends HttpJsonRestExecutor<Boolean> {
+public class GetWatchlistsExecutor extends IgRestExecutor<Boolean> {
 
 	public GetWatchlistsExecutor(IIgRestService platform) {
 		super(platform);

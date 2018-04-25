@@ -5,9 +5,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class GetPositionsExecutor extends HttpJsonRestExecutor<GetPositionsResponse> {
+public class GetPositionsExecutor extends IgRestExecutor<GetPositionsResponse> {
 
 	public GetPositionsExecutor(IIgRestService service) {
 		super(service);

@@ -8,9 +8,9 @@ import org.apache.http.client.methods.HttpUriRequest;
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.text.Strings;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class SearchMarketsExecutor extends HttpJsonRestExecutor<SearchMarketsResponse> {
+public class SearchMarketsExecutor extends IgRestExecutor<SearchMarketsResponse> {
 
 	private final String searchTerm;
 

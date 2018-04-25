@@ -7,9 +7,9 @@ import org.slf4j.LoggerFactory;
 
 import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.HttpJsonRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
-public class LoginExecutor extends HttpJsonRestExecutor<LoginResponse> {
+public class LoginExecutor extends IgRestExecutor<LoginResponse> {
 
 	private static final Logger log = LoggerFactory.getLogger(LoginExecutor.class);
 
