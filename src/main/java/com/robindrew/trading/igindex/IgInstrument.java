@@ -3,8 +3,8 @@ package com.robindrew.trading.igindex;
 import static com.robindrew.trading.Instruments.AUD_USD;
 import static com.robindrew.trading.Instruments.BITCOIN;
 import static com.robindrew.trading.Instruments.BRENT_CRUDE_OIL;
-import static com.robindrew.trading.Instruments.DAX;
-import static com.robindrew.trading.Instruments.DOW_JONES;
+import static com.robindrew.trading.Instruments.DAX_30;
+import static com.robindrew.trading.Instruments.DOW_JONES_30;
 import static com.robindrew.trading.Instruments.ETHER;
 import static com.robindrew.trading.Instruments.EUR_JPY;
 import static com.robindrew.trading.Instruments.EUR_USD;
@@ -52,18 +52,18 @@ public class IgInstrument extends Instrument implements IIgInstrument {
 	/** FTSE 100. */
 	public static final IgInstrument WEEKDAY_FTSE_100 = new IgInstrument("IX.D.FTSE.DAILY.IP", FTSE_100);
 	/** DAX. */
-	public static final IgInstrument WEEKDAY_DAX = new IgInstrument("IX.D.DAX.DAILY.IP", DAX);
+	public static final IgInstrument WEEKDAY_DAX = new IgInstrument("IX.D.DAX.DAILY.IP", DAX_30);
 	/** S&amp;P 500. */
 	public static final IgInstrument WEEKDAY_SP_500 = new IgInstrument("IX.D.SPTRD.DAILY.IP", SP_500);
 	/** DOW JONES. */
-	public static final IgInstrument WEEKDAY_DOW_JONES = new IgInstrument("IX.D.DOW.DAILY.IP", DOW_JONES);
+	public static final IgInstrument WEEKDAY_DOW_JONES = new IgInstrument("IX.D.DOW.DAILY.IP", DOW_JONES_30);
 
 	/** FTSE 100 (Weekend). */
 	public static final IgInstrument SUNDAY_FTSE_100 = new IgInstrument("IX.D.SUNFUN.DAILY.IP", FTSE_100);
 	/** DAX (Weekend). */
-	public static final IgInstrument SUNDAY_DAX = new IgInstrument("IX.D.SUNDAX.DAILY.IP", DAX);
+	public static final IgInstrument SUNDAY_DAX = new IgInstrument("IX.D.SUNDAX.DAILY.IP", DAX_30);
 	/** DOW JONES (Weekend). */
-	public static final IgInstrument SUNDAY_DOW_JONES = new IgInstrument("IX.D.SUNDOW.DAILY.IP", DOW_JONES);
+	public static final IgInstrument SUNDAY_DOW_JONES = new IgInstrument("IX.D.SUNDOW.DAILY.IP", DOW_JONES_30);
 
 	/** US CRUDE. */
 	public static final IgInstrument SPOT_US_CRUDE = new IgInstrument("CC.D.CL.USS.IP", US_CRUDE_OIL);

@@ -42,6 +42,14 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		this.service = service;
 	}
 
+	public String getName() {
+		String name = getClass().getSimpleName();
+		if (name.endsWith("Executor")) {
+			name = name.substring(0, name.length() - "Executor".length());
+		}
+		return name;
+	}
+
 	protected boolean logRequest() {
 		return true;
 	}
