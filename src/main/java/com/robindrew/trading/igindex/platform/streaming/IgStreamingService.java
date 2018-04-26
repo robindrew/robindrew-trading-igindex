@@ -25,7 +25,7 @@ import com.robindrew.trading.price.candle.TickPriceCandle;
 import com.robindrew.trading.price.decimal.Decimal;
 import com.robindrew.trading.price.decimal.IDecimal;
 
-public class IgStreamingService extends StreamingService<IIgInstrument> {
+public class IgStreamingService extends StreamingService<IIgInstrument> implements IIgStreamingService {
 
 	private static final Logger log = LoggerFactory.getLogger(IgStreamingService.class);
 
