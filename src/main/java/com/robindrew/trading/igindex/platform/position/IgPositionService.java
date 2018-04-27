@@ -15,8 +15,6 @@ import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.Account;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.AccountType;
 import com.robindrew.trading.igindex.platform.rest.executor.getactivity.ActivityList;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
 import com.robindrew.trading.platform.positions.PositionService;
@@ -24,20 +22,15 @@ import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.closed.IClosedPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.precision.IPricePrecision;
-import com.robindrew.trading.trade.funds.AccountFunds;
-import com.robindrew.trading.trade.funds.Cash;
-import com.robindrew.trading.trade.funds.ICash;
 
 public class IgPositionService extends PositionService {
 
 	private static final Logger log = LoggerFactory.getLogger(IgPositionService.class);
 
-	private final AccountType type;
 	private final IIgRestService rest;
 
-	public IgPositionService(IIgRestService rest, AccountType type) {
+	public IgPositionService(IIgRestService rest) {
 		this.rest = Check.notNull("rest", rest);
-		this.type = Check.notNull("type", type);
 	}
 
 	@Override
@@ -77,13 +70,6 @@ public class IgPositionService extends PositionService {
 		}
 
 		return null;
-	}
-
-	@Override
-	public AccountFunds getAvailableFunds() {
-		Account account = rest.getAccount(type);
-		ICash available = new Cash(account.getBalance().getAvailable(), false);
-		return new AccountFunds(available);
 	}
 
 	@Override
