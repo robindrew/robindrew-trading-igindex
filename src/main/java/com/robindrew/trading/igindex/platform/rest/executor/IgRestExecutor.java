@@ -133,7 +133,6 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 
 		// Parse the JSON
 		Class<R> responseType = getResponseType();
-		System.out.println(json);
 		R parsed = new GsonBuilder().create().fromJson(json, responseType);
 
 		// Sanity check (TODO: remove this?)
