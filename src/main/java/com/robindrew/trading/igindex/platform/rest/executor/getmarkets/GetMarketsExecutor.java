@@ -5,7 +5,6 @@ import static com.robindrew.common.util.Check.notEmpty;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -31,8 +30,8 @@ public class GetMarketsExecutor extends IgRestExecutor<GetMarketsResponse> {
 	}
 
 	@Override
-	public GetMarketsResponse createResponse(IJson json) {
-		return new GetMarketsResponse(json);
+	protected Class<GetMarketsResponse> getResponseType() {
+		return GetMarketsResponse.class;
 	}
 
 }

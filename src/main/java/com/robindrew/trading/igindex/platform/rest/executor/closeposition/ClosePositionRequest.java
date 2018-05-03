@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
+import com.robindrew.trading.igindex.platform.rest.executor.openposition.request.OrderType;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 

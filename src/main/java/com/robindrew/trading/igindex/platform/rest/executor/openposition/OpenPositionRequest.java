@@ -3,7 +3,7 @@ package com.robindrew.trading.igindex.platform.rest.executor.openposition;
 import java.math.BigDecimal;
 
 import com.robindrew.common.locale.CurrencyCode;
-import com.robindrew.trading.igindex.platform.rest.executor.closeposition.OrderType;
+import com.robindrew.trading.igindex.platform.rest.executor.openposition.request.OrderType;
 import com.robindrew.trading.trade.TradeDirection;
 
 public class OpenPositionRequest {

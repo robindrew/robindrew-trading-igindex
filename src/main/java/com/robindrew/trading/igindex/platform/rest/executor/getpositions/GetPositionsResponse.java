@@ -4,20 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
-import com.robindrew.common.json.IJson;
+import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
 
-public class GetPositionsResponse {
+public class GetPositionsResponse extends IgJsonObject {
 
-	private final List<MarketPosition> marketPositions = new ArrayList<>();
-
-	public GetPositionsResponse(IJson object) {
-		for (IJson element : object.getObjectList("positions")) {
-			marketPositions.add(new MarketPosition(element));
-		}
-	}
+	private List<MarketPosition> positions = new ArrayList<>();
 
 	public List<MarketPosition> getMarketPositions() {
-		return ImmutableList.copyOf(marketPositions);
+		return ImmutableList.copyOf(positions);
 	}
 
 }

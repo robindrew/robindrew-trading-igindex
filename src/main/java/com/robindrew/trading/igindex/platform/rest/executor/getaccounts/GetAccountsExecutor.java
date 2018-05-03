@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform.rest.executor.getaccounts;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -26,8 +25,8 @@ public class GetAccountsExecutor extends IgRestExecutor<GetAccountsResponse> {
 	}
 
 	@Override
-	public GetAccountsResponse createResponse(IJson json) {
-		return new GetAccountsResponse(json);
+	protected Class<GetAccountsResponse> getResponseType() {
+		return GetAccountsResponse.class;
 	}
 
 }

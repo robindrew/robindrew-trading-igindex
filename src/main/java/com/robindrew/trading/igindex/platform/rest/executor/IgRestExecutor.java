@@ -1,6 +1,5 @@
 package com.robindrew.trading.igindex.platform.rest.executor;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Optional;
 
 import org.apache.http.Header;
@@ -10,11 +9,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.StringEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.robindrew.common.json.Gsons;
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.text.LineBuilder;
@@ -83,10 +82,6 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 	}
 
 	protected void addHeaders(HttpUriRequest request) {
-		String host = request.getURI().getHost();
-		if (host == null) {
-			throw new IllegalStateException("host not available in URI '" + request.getURI() + "'");
-		}
 
 		// Basic Headers
 		request.addHeader("Accept", "application/json; charset=UTF-8");
@@ -95,11 +90,7 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		request.addHeader("X-IG-API-KEY", getSession().getCredentials().getApiKey());
 		request.addHeader("Version", Integer.toString(getRequestVersion()));
 		request.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
-		request.addHeader("Host", host);
-
-		if (request instanceof HttpEntityEnclosingRequestBase) {
-			request.addHeader("Content-Type", "application/json; charset=UTF-8");
-		}
+		request.addHeader("Host", request.getURI().getHost());
 
 		// Account Security Token
 		if (getSession().hasAccountSecurityToken()) {
@@ -136,13 +127,23 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 			throw getFailureException(request, response);
 		}
 
-		// Parse the JSON
-		String content = HttpClients.getTextContent(response.getEntity());
-		logResponse(request, response, content);
-		IJson json = Gsons.parseJson(content);
+		// Get the content
+		String json = HttpClients.getTextContent(response.getEntity());
+		logResponse(request, response, json);
 
-		// Create the response
-		return createResponse(json);
+		// Parse the JSON
+		Class<R> responseType = getResponseType();
+		System.out.println(json);
+		R parsed = new GsonBuilder().create().fromJson(json, responseType);
+
+		// Sanity check (TODO: remove this?)
+		String parsedJson = parsed.toString();
+		if (!parsedJson.equals(json)) {
+			log.warn("Before Parsing: {}", json);
+			log.warn("After Parsing:  {}", parsedJson);
+		}
+		return parsed;
+
 	}
 
 	private HttpClientException getFailureException(HttpUriRequest request, HttpResponse response) {
@@ -222,17 +223,13 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		}
 	}
 
-	protected void setRequestContent(HttpEntityEnclosingRequestBase request, Object jsonObject) {
-		try {
-			String json = (jsonObject instanceof String) ? jsonObject.toString() : new Gson().toJson(jsonObject);
-			request.setEntity(new StringEntity(json));
-		} catch (UnsupportedEncodingException e) {
-			throw new HttpClientException(e);
-		}
+	protected void setJsonContent(HttpEntityEnclosingRequestBase request, Object object) {
+		String json = (object instanceof String) ? object.toString() : new Gson().toJson(object);
+		HttpClients.setJsonContent(request, json);
 	}
 
 	protected abstract int getRequestVersion();
 
-	protected abstract R createResponse(IJson json);
+	protected abstract Class<R> getResponseType();
 
 }

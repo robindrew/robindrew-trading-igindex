@@ -2,8 +2,8 @@ package com.robindrew.trading.igindex.platform.account;
 
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.Account;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.AccountType;
+import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.Account;
+import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType;
 import com.robindrew.trading.platform.account.IAccountService;
 import com.robindrew.trading.trade.cash.Cash;
 import com.robindrew.trading.trade.cash.ICash;

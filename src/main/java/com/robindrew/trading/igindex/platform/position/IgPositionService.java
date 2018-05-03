@@ -15,7 +15,7 @@ import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.getactivity.ActivityList;
+import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityList;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
 import com.robindrew.trading.platform.positions.PositionService;
 import com.robindrew.trading.position.IPosition;

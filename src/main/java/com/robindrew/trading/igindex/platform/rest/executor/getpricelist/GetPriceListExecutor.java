@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpricelist;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
@@ -57,8 +56,8 @@ public class GetPriceListExecutor extends IgRestExecutor<GetPriceListResponse> {
 	}
 
 	@Override
-	public GetPriceListResponse createResponse(IJson json) {
-		return new GetPriceListResponse(json);
+	protected Class<GetPriceListResponse> getResponseType() {
+		return GetPriceListResponse.class;
 	}
 
 }

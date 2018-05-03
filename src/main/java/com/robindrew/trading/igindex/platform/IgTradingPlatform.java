@@ -1,6 +1,6 @@
 package com.robindrew.trading.igindex.platform;
 
-import static com.robindrew.trading.igindex.platform.rest.executor.getaccounts.AccountType.SPREADBET;
+import static com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType.SPREADBET;
 
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.igindex.IIgInstrument;

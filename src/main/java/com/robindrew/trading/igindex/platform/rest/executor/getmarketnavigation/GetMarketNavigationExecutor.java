@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -37,7 +36,7 @@ public class GetMarketNavigationExecutor extends IgRestExecutor<GetMarketNavigat
 	}
 
 	@Override
-	public GetMarketNavigationResponse createResponse(IJson json) {
-		return new GetMarketNavigationResponse(json);
+	protected Class<GetMarketNavigationResponse> getResponseType() {
+		return GetMarketNavigationResponse.class;
 	}
 }

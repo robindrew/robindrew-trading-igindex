@@ -8,14 +8,15 @@ import java.util.Set;
 import com.robindrew.common.date.UnitChrono;
 import com.robindrew.trading.igindex.IgInstrument;
 import com.robindrew.trading.igindex.platform.IgSession;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.Account;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.AccountType;
-import com.robindrew.trading.igindex.platform.rest.executor.getactivity.ActivityList;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.MarketNavigation;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.Markets;
+import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.Account;
+import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType;
+import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityList;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.response.Market;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.response.MarketNavigation;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Markets;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
 import com.robindrew.trading.igindex.platform.rest.executor.getpricelist.PriceList;
-import com.robindrew.trading.igindex.platform.rest.executor.login.LoginDetails;
+import com.robindrew.trading.igindex.platform.rest.executor.login.LoginResponse;
 import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
@@ -26,7 +27,7 @@ public interface IIgRestService {
 
 	IgSession getSession();
 
-	LoginDetails login();
+	LoginResponse login();
 
 	void logout();
 
@@ -52,7 +53,7 @@ public interface IIgRestService {
 
 	MarketNavigation getMarketNavigation(int id, boolean latest);
 
-	com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.Markets searchMarkets(String text);
+	List<Market> searchMarkets(String text);
 
 	ActivityList getActivityList(boolean latest);
 

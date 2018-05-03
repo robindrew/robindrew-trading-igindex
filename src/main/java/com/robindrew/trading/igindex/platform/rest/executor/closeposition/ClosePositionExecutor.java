@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform.rest.executor.closeposition;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -29,12 +28,12 @@ public class ClosePositionExecutor extends IgRestExecutor<ClosePositionResponse>
 		HttpPost request = new HttpPost(getUrl("/positions/otc"));
 		addDeleteHeader(request);
 		addHeaders(request);
-		setRequestContent(request, jsonRequest);
+		setJsonContent(request, jsonRequest);
 		return request;
 	}
 
 	@Override
-	public ClosePositionResponse createResponse(IJson json) {
-		return new ClosePositionResponse(json);
+	protected Class<ClosePositionResponse> getResponseType() {
+		return ClosePositionResponse.class;
 	}
 }

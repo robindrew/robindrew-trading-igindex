@@ -18,20 +18,21 @@ import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.rest.executor.closeposition.ClosePositionExecutor;
 import com.robindrew.trading.igindex.platform.rest.executor.closeposition.ClosePositionRequest;
 import com.robindrew.trading.igindex.platform.rest.executor.closeposition.ClosePositionResponse;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.Account;
-import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.AccountType;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.GetAccountsExecutor;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.GetAccountsResponse;
-import com.robindrew.trading.igindex.platform.rest.executor.getactivity.ActivityCache;
-import com.robindrew.trading.igindex.platform.rest.executor.getactivity.ActivityList;
+import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.Account;
+import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType;
 import com.robindrew.trading.igindex.platform.rest.executor.getactivity.GetActivityExecutor;
+import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityCache;
+import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityList;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.GetMarketNavigationExecutor;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.IMarketNavigationCache;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.MarketNavigation;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.MarketNavigationCache;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.cache.IMarketNavigationCache;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.cache.MarketNavigationCache;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.response.Market;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.response.MarketNavigation;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.GetMarketsExecutor;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.Markets;
-import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.MarketsCache;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Markets;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.MarketsCache;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.GetPositionsExecutor;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.GetPositionsResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
@@ -40,7 +41,6 @@ import com.robindrew.trading.igindex.platform.rest.executor.getpricelist.GetPric
 import com.robindrew.trading.igindex.platform.rest.executor.getpricelist.GetPriceListResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.getpricelist.PriceList;
 import com.robindrew.trading.igindex.platform.rest.executor.getpricelist.PriceResolution;
-import com.robindrew.trading.igindex.platform.rest.executor.login.LoginDetails;
 import com.robindrew.trading.igindex.platform.rest.executor.login.LoginExecutor;
 import com.robindrew.trading.igindex.platform.rest.executor.login.LoginResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.logout.LogoutExecutor;
@@ -91,9 +91,8 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public synchronized LoginDetails login() {
-		LoginResponse response = new LoginExecutor(this).execute();
-		return response.getDetails();
+	public synchronized LoginResponse login() {
+		return new LoginExecutor(this).execute();
 	}
 
 	@Override
@@ -130,7 +129,7 @@ public class IgRestService implements IIgRestService {
 	@Override
 	public List<Account> getAccountList() {
 		GetAccountsResponse response = new GetAccountsExecutor(this).execute();
-		return response.getAccounts();
+		return response.toList();
 	}
 
 	@Override
@@ -164,7 +163,7 @@ public class IgRestService implements IIgRestService {
 		if (latest) {
 			marketsCache.remove(epic);
 		}
-		return marketsCache.get(epic, () -> new GetMarketsExecutor(IgRestService.this, epic).execute().getMarkets());
+		return marketsCache.get(epic, () -> new GetMarketsExecutor(IgRestService.this, epic).execute());
 	}
 
 	@Override
@@ -212,7 +211,7 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.Markets searchMarkets(String text) {
+	public List<Market> searchMarkets(String text) {
 		return new SearchMarketsExecutor(this, text).execute().getMarkets();
 	}
 

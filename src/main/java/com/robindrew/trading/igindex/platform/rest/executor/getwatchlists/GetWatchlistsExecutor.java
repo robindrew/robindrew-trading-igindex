@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform.rest.executor.getwatchlists;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -26,8 +25,7 @@ public class GetWatchlistsExecutor extends IgRestExecutor<Boolean> {
 	}
 
 	@Override
-	public Boolean createResponse(IJson json) {
-		return true;
+	protected Class<Boolean> getResponseType() {
+		return Boolean.class;
 	}
-
 }

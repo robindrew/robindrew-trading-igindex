@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform.rest.executor.logout;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -28,7 +27,7 @@ public class LogoutExecutor extends IgRestExecutor<Boolean> {
 	}
 
 	@Override
-	public Boolean createResponse(IJson json) {
-		return true;
+	public Class<Boolean> getResponseType() {
+		return Boolean.class;
 	}
 }

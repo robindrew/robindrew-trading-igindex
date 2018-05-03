@@ -5,7 +5,6 @@ import static com.robindrew.common.util.Check.notEmpty;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.common.text.Strings;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
@@ -32,8 +31,8 @@ public class SearchMarketsExecutor extends IgRestExecutor<SearchMarketsResponse>
 	}
 
 	@Override
-	public SearchMarketsResponse createResponse(IJson json) {
-		return new SearchMarketsResponse(json);
+	protected Class<SearchMarketsResponse> getResponseType() {
+		return SearchMarketsResponse.class;
 	}
 
 }

@@ -3,44 +3,27 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpositions;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
 
-public final class Market extends IgJsonObject {
+public class Market extends IgJsonObject {
 
-	private final String instrumentName;
-	private final String expiry;
-	private final String epic;
-	private final InstrumentType instrumentType;
-	private final BigDecimal lotSize;
-	private final BigDecimal high;
-	private final BigDecimal low;
-	private final BigDecimal percentageChange;
-	private final BigDecimal netChange;
-	private final BigDecimal bid;
-	private final BigDecimal offer;
-	// private LocalTime updateTime; //":"23:07:47",
-	private final LocalTime updateTimeUTC; // ":"23:07:47",
-	// "delayTime":0,
-	// "streamingPricesAvailable":true,
-	private final MarketStatus marketStatus;
-	// "scalingFactor":1
-
-	public Market(IJson object) {
-		instrumentName = object.get("instrumentName");
-		expiry = object.get("expiry");
-		epic = object.get("epic");
-		instrumentType = object.getEnum("instrumentType", InstrumentType.class);
-		lotSize = object.getBigDecimal("lotSize");
-		high = object.getBigDecimal("high", true);
-		low = object.getBigDecimal("low", true);
-		percentageChange = object.getBigDecimal("percentageChange");
-		netChange = object.getBigDecimal("netChange");
-		bid = object.getBigDecimal("bid");
-		offer = object.getBigDecimal("offer");
-		updateTimeUTC = object.getLocalTime("updateTimeUTC");
-		marketStatus = object.getEnum("marketStatus", MarketStatus.class);
-	}
+	private String instrumentName;
+	private String expiry;
+	private String epic;
+	private InstrumentType instrumentType;
+	private BigDecimal lotSize;
+	private BigDecimal high;
+	private BigDecimal low;
+	private BigDecimal percentageChange;
+	private BigDecimal netChange;
+	private BigDecimal bid;
+	private BigDecimal offer;
+	private String updateTime; // ":"23:07:47",
+	private String updateTimeUTC; // ":"23:07:47",
+	private Integer delayTime;
+	private Boolean streamingPricesAvailable;
+	private MarketStatus marketStatus;
+	private Integer scalingFactor;
 
 	public String getInstrumentName() {
 		return instrumentName;
@@ -87,11 +70,27 @@ public final class Market extends IgJsonObject {
 	}
 
 	public LocalTime getUpdateTimeUTC() {
-		return updateTimeUTC;
+		return LocalTime.parse(updateTimeUTC);
 	}
 
 	public MarketStatus getMarketStatus() {
 		return marketStatus;
+	}
+
+	public String getUpdateTime() {
+		return updateTime;
+	}
+
+	public Integer getDelayTime() {
+		return delayTime;
+	}
+
+	public Boolean getStreamingPricesAvailable() {
+		return streamingPricesAvailable;
+	}
+
+	public Integer getScalingFactor() {
+		return scalingFactor;
 	}
 
 	public BigDecimal getSpread() {

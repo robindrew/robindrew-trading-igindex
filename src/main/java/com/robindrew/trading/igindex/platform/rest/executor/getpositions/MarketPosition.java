@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
-import com.robindrew.common.json.IJson;
 import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IgInstrument;
@@ -18,13 +17,8 @@ import com.robindrew.trading.trade.TradeDirection;
 
 public class MarketPosition extends IgJsonObject implements IMarketPosition, Comparable<MarketPosition> {
 
-	private final Position position;
-	private final Market market;
-
-	public MarketPosition(IJson object) {
-		this.position = new Position(object.getObject("position"));
-		this.market = new Market(object.getObject("market"));
-	}
+	private Position position;
+	private Market market;
 
 	public Position getPosition() {
 		return position;
@@ -50,7 +44,7 @@ public class MarketPosition extends IgJsonObject implements IMarketPosition, Com
 
 	@Override
 	public LocalDateTime getOpenDate() {
-		return getPosition().getCreatedDate();
+		return getPosition().getCreatedDateTime();
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.robindrew.common.date.Dates;
-import com.robindrew.common.json.IJson;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
 
@@ -37,8 +36,8 @@ public class GetActivityExecutor extends IgRestExecutor<GetActivityResponse> {
 	}
 
 	@Override
-	public GetActivityResponse createResponse(IJson json) {
-		return new GetActivityResponse(json);
+	protected Class<GetActivityResponse> getResponseType() {
+		return GetActivityResponse.class;
 	}
 
 }

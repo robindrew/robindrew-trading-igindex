@@ -1,16 +1,6 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getmarkets;
+import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Markets;
 
-import com.robindrew.common.json.IJson;
+public class GetMarketsResponse extends Markets {
 
-public class GetMarketsResponse {
-
-	private final Markets markets;
-
-	public GetMarketsResponse(IJson object) {
-		markets = new Markets(object);
-	}
-
-	public Markets getMarkets() {
-		return markets;
-	}
 }
