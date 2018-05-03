@@ -7,13 +7,13 @@ public enum IgEnvironment {
 	/** Demo Environment. */
 	DEMO("https://demo-api.ig.com/gateway/deal");
 
-	private final String url;
+	private final String restUrl;
 
-	private IgEnvironment(String url) {
-		this.url = url;
+	private IgEnvironment(String restUrl) {
+		this.restUrl = restUrl;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getRestUrl() {
+		return restUrl;
 	}
 }

@@ -75,7 +75,7 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 	}
 
 	protected String getUrl(String path) {
-		return getSession().getEnvironment().getUrl() + path;
+		return getSession().getEnvironment().getRestUrl() + path;
 	}
 
 	protected void addDeleteHeader(HttpPost request) {
