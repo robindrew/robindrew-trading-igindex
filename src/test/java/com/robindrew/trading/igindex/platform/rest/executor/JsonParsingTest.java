@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.robindrew.common.text.Strings;
 import com.robindrew.trading.igindex.platform.rest.executor.getactivity.GetActivityResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.GetMarketNavigationResponse;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.GetMarketsResponse;
@@ -48,7 +47,7 @@ public class JsonParsingTest {
 	@Test
 	public void parseGetPositions() {
 		String json = "{\"positions\":[{\"position\":{\"contractSize\":1.0,\"createdDate\":\"2018/05/03 18:01:42:000\",\"createdDateUTC\":\"2018-05-03T17:01:42\",\"dealId\":\"DIAAAABX5GHJ7AW\",\"dealReference\":\"DXGTFBLG77D44TD\",\"size\":0.5,\"direction\":\"BUY\",\"limitLevel\":null,\"level\":7524.0,\"currency\":\"GBP\",\"controlledRisk\":false,\"stopLevel\":7024.0,\"trailingStep\":null,\"trailingStopDistance\":null,\"limitedRiskPremium\":null},\"market\":{\"instrumentName\":\"AUD/USD\",\"expiry\":\"DFB\",\"epic\":\"CS.D.AUDUSD.TODAY.IP\",\"instrumentType\":\"CURRENCIES\",\"lotSize\":1.0,\"high\":7543.3,\"low\":7484.8,\"percentageChange\":0.41,\"netChange\":30.5,\"bid\":7523.5,\"offer\":7524.1,\"updateTime\":\"18:02:05\",\"updateTimeUTC\":\"17:02:05\",\"delayTime\":0,\"streamingPricesAvailable\":true,\"marketStatus\":\"TRADEABLE\",\"scalingFactor\":1}}]}";
-		
+
 		GetPositionsResponse object = gson.fromJson(json, GetPositionsResponse.class);
 		String toJson = gson.toJson(object);
 
