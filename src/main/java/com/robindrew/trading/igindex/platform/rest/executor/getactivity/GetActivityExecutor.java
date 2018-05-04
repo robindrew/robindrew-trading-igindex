@@ -31,7 +31,7 @@ public class GetActivityExecutor extends IgRestExecutor<GetActivityResponse> {
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpGet request = new HttpGet(getUrl("/history/activity?detailed=true&pageSize=500&from=" + date));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

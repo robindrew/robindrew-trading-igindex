@@ -37,7 +37,7 @@ public class LoginExecutor extends IgRestExecutor<LoginResponse> {
 
 		// HTTP
 		HttpPost request = new HttpPost(getUrl("/session"));
-		addHeaders(request);
+		addStandardHeaders(request);
 		setJsonContent(request, jsonRequest);
 		return request;
 	}

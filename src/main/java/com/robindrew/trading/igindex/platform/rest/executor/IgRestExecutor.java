@@ -1,5 +1,7 @@
 package com.robindrew.trading.igindex.platform.rest.executor;
 
+import static com.robindrew.common.util.Check.notNull;
+
 import java.util.Optional;
 
 import org.apache.http.Header;
@@ -12,7 +14,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.robindrew.common.json.Gsons;
 import com.robindrew.common.json.IJson;
@@ -32,13 +33,10 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 
 	private static final Logger log = LoggerFactory.getLogger(IgRestExecutor.class);
 
-	private final IIgRestService service;
+	private final IIgRestService rest;
 
-	protected IgRestExecutor(IIgRestService service) {
-		if (service == null) {
-			throw new NullPointerException("service");
-		}
-		this.service = service;
+	protected IgRestExecutor(IIgRestService rest) {
+		this.rest = notNull("rest", rest);;
 	}
 
 	public String getName() {
@@ -62,11 +60,11 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 	}
 
 	protected ITransactionLog getTransactionLog() {
-		return service.getTransactionLog();
+		return rest.getTransactionLog();
 	}
 
 	public IgSession getSession() {
-		return service.getSession();
+		return rest.getSession();
 	}
 
 	protected boolean isLoginAttempt() {
@@ -81,16 +79,18 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		request.addHeader("_method", "DELETE");
 	}
 
-	protected void addHeaders(HttpUriRequest request) {
+	protected void addStandardHeaders(HttpUriRequest request) {
 
 		// Basic Headers
 		request.addHeader("Accept", "application/json; charset=UTF-8");
 		request.addHeader("Accept-Encoding", "gzip, deflate, sdch, br");
 		request.addHeader("Accept-Language", "en-GB,en-US;q=0.8,en;q=0.6,et;q=0.4,it;q=0.2,mt;q=0.2,sv;q=0.2");
-		request.addHeader("X-IG-API-KEY", getSession().getCredentials().getApiKey());
-		request.addHeader("Version", Integer.toString(getRequestVersion()));
 		request.addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
 		request.addHeader("Host", request.getURI().getHost());
+
+		// IG Index Headers
+		request.addHeader("X-IG-API-KEY", getSession().getCredentials().getApiKey());
+		request.addHeader("Version", Integer.toString(getRequestVersion()));
 
 		// Account Security Token
 		if (getSession().hasAccountSecurityToken()) {
@@ -178,7 +178,7 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 
 		// Login!
 		try {
-			service.login();
+			rest.login();
 		} catch (IgException e) {
 			return new HttpClientException("Invalid request: " + request.getRequestLine() + " -> " + code, e);
 		}
@@ -188,17 +188,8 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 	}
 
 	private void logResponse(HttpUriRequest request, HttpResponse response, String json) {
-
-		// HTTP response
-		LineBuilder text = new LineBuilder();
-		text.appendLine(response.getStatusLine());
-		for (Header header : response.getAllHeaders()) {
-			text.append(header.getName()).append(": ").append(header.getValue()).appendLine();
-		}
-		text.appendLine();
-		text.append(json);
 		if (logResponse()) {
-			log.debug("[HTTP Response]\n{}", text);
+			log.info("[HTTP Response]\n" + HttpClients.toString(response, json));
 		}
 
 		// Transaction Log
@@ -207,23 +198,17 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 	}
 
 	private void logRequest(HttpUriRequest request) {
-		LineBuilder text = new LineBuilder();
-		text.appendLine(request.getRequestLine());
-		for (Header header : request.getAllHeaders()) {
-			text.append(header.getName()).append(": ").append(header.getValue()).appendLine();
-		}
-		if (request instanceof HttpEntityEnclosingRequestBase) {
-			HttpEntityEnclosingRequestBase base = (HttpEntityEnclosingRequestBase) request;
-			text.appendLine();
-			text.append(HttpClients.getTextContent(base.getEntity()));
-		}
 		if (logRequest()) {
-			log.debug("[HTTP Request]\n" + text);
+			log.info("[HTTP Request]\n" + HttpClients.toString(request));
 		}
 	}
 
-	protected void setJsonContent(HttpEntityEnclosingRequestBase request, Object object) {
-		String json = (object instanceof String) ? object.toString() : new Gson().toJson(object);
+	public void setJsonContent(HttpEntityEnclosingRequestBase request, Object content) {
+
+		// Build the JSON
+		String json = Strings.json(content, true);
+
+		// Set the HTTP content (N.B. content type & length headers are automatically added)
 		HttpClients.setJsonContent(request, json);
 	}
 

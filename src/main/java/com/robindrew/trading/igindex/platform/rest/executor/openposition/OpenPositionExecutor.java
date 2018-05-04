@@ -26,7 +26,7 @@ public class OpenPositionExecutor extends IgRestExecutor<OpenPositionResponse> {
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpPost http = new HttpPost(getUrl("/positions/otc"));
-		addHeaders(http);
+		addStandardHeaders(http);
 		setJsonContent(http, request);
 		return http;
 	}

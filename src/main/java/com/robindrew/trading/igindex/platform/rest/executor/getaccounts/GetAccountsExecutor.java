@@ -20,7 +20,7 @@ public class GetAccountsExecutor extends IgRestExecutor<GetAccountsResponse> {
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpGet request = new HttpGet(getUrl("/accounts"));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

@@ -29,7 +29,7 @@ public class GetPriceListExecutor extends IgRestExecutor<GetPriceListResponse> {
 		IgInstrument instrument = request.getInstrument();
 
 		HttpGet request = new HttpGet(getUrl("/prices/") + instrument.getEpic() + getQuery());
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

@@ -27,7 +27,7 @@ public class ClosePositionExecutor extends IgRestExecutor<ClosePositionResponse>
 	public HttpUriRequest createRequest() {
 		HttpPost request = new HttpPost(getUrl("/positions/otc"));
 		addDeleteHeader(request);
-		addHeaders(request);
+		addStandardHeaders(request);
 		setJsonContent(request, jsonRequest);
 		return request;
 	}

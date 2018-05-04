@@ -20,7 +20,7 @@ public class GetPositionsExecutor extends IgRestExecutor<GetPositionsResponse> {
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpGet request = new HttpGet(getUrl("/positions"));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

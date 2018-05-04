@@ -20,7 +20,7 @@ public class GetWatchlistsExecutor extends IgRestExecutor<Boolean> {
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpGet request = new HttpGet(getUrl("/watchlists"));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

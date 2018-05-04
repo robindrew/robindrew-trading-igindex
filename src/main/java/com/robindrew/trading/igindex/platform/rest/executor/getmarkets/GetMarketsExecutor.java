@@ -25,7 +25,7 @@ public class GetMarketsExecutor extends IgRestExecutor<GetMarketsResponse> {
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpGet request = new HttpGet(getUrl("/markets/" + epic));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

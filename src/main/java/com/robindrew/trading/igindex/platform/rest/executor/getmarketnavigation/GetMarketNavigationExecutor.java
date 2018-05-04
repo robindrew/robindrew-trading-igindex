@@ -31,7 +31,7 @@ public class GetMarketNavigationExecutor extends IgRestExecutor<GetMarketNavigat
 
 		// HTTP
 		HttpGet request = new HttpGet(getUrl("/marketnavigation" + (id == ROOT_ID ? "" : "/" + id)));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

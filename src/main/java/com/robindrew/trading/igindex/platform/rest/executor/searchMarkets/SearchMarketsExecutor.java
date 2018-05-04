@@ -26,7 +26,7 @@ public class SearchMarketsExecutor extends IgRestExecutor<SearchMarketsResponse>
 	@Override
 	public HttpUriRequest createRequest() {
 		HttpGet request = new HttpGet(getUrl("/markets?searchTerm=" + Strings.urlEncode(searchTerm)));
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 

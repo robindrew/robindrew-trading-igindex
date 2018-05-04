@@ -22,7 +22,7 @@ public class LogoutExecutor extends IgRestExecutor<Boolean> {
 
 		// HTTP
 		HttpDelete request = new HttpDelete("/session");
-		addHeaders(request);
+		addStandardHeaders(request);
 		return request;
 	}
 
