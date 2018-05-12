@@ -1,5 +1,6 @@
 package com.robindrew.trading.igindex.platform.position;
 
+import static com.robindrew.trading.provider.TradingProvider.IGINDEX;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.time.LocalDateTime;
@@ -17,19 +18,20 @@ import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityList;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
-import com.robindrew.trading.platform.positions.PositionService;
+import com.robindrew.trading.platform.positions.AbstractPositionService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.closed.IClosedPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.precision.IPricePrecision;
 
-public class IgPositionService extends PositionService {
+public class IgPositionService extends AbstractPositionService {
 
 	private static final Logger log = LoggerFactory.getLogger(IgPositionService.class);
 
 	private final IIgRestService rest;
 
 	public IgPositionService(IIgRestService rest) {
+		super(IGINDEX);
 		this.rest = Check.notNull("rest", rest);
 	}
 

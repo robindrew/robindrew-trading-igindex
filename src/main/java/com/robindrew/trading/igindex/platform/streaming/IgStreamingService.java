@@ -1,5 +1,7 @@
 package com.robindrew.trading.igindex.platform.streaming;
 
+import static com.robindrew.trading.provider.TradingProvider.IGINDEX;
+
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.slf4j.Logger;
@@ -18,14 +20,14 @@ import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Markets;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Snapshot;
 import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
+import com.robindrew.trading.platform.streaming.AbstractStreamingService;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
-import com.robindrew.trading.platform.streaming.StreamingService;
 import com.robindrew.trading.price.candle.ITickPriceCandle;
 import com.robindrew.trading.price.candle.TickPriceCandle;
 import com.robindrew.trading.price.decimal.Decimal;
 import com.robindrew.trading.price.decimal.IDecimal;
 
-public class IgStreamingService extends StreamingService<IIgInstrument> implements IIgStreamingService {
+public class IgStreamingService extends AbstractStreamingService<IIgInstrument> implements IIgStreamingService {
 
 	private static final Logger log = LoggerFactory.getLogger(IgStreamingService.class);
 
@@ -33,6 +35,7 @@ public class IgStreamingService extends StreamingService<IIgInstrument> implemen
 	private final AtomicReference<IgStreamingServiceConnection> serviceConnection = new AtomicReference<>();
 
 	public IgStreamingService(IIgRestService rest) {
+		super(IGINDEX);
 		this.rest = Check.notNull("rest", rest);
 	}
 

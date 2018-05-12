@@ -24,8 +24,8 @@ import com.robindrew.trading.Instrument;
 import com.robindrew.trading.InstrumentType;
 import com.robindrew.trading.price.precision.IPricePrecision;
 import com.robindrew.trading.price.precision.PricePrecision;
-import com.robindrew.trading.provider.ITradeDataProvider;
-import com.robindrew.trading.provider.TradeDataProvider;
+import com.robindrew.trading.provider.ITradingProvider;
+import com.robindrew.trading.provider.TradingProvider;
 
 public class IgInstrument extends Instrument implements IIgInstrument {
 
@@ -98,8 +98,8 @@ public class IgInstrument extends Instrument implements IIgInstrument {
 	}
 
 	@Override
-	public ITradeDataProvider getProvider() {
-		return TradeDataProvider.IGINDEX;
+	public ITradingProvider getProvider() {
+		return TradingProvider.IGINDEX;
 	}
 
 }
