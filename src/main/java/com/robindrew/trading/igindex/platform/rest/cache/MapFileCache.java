@@ -11,6 +11,10 @@ import com.robindrew.common.util.Check;
 
 public class MapFileCache<K, V> {
 
+	private static Gson buildGson() {
+		return new GsonBuilder().setPrettyPrinting().create();
+	}
+
 	private final File directory;
 	private final Class<V> valueType;
 	private final Map<K, V> cache = new LinkedHashMap<>();
@@ -54,7 +58,7 @@ public class MapFileCache<K, V> {
 	}
 
 	protected void writeToFile(V value, File file) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = buildGson();
 		String json = gson.toJson(value);
 		Files.writeFromString(file, json);
 	}
@@ -64,7 +68,7 @@ public class MapFileCache<K, V> {
 			return null;
 		}
 		String json = Files.readToString(file);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		Gson gson = buildGson();
 		return gson.fromJson(json, valueType);
 	}
 

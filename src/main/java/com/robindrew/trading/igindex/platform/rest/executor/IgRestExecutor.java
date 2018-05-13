@@ -4,7 +4,6 @@ import static com.robindrew.common.util.Check.notNull;
 
 import java.util.Optional;
 
-import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,10 +13,8 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gson.GsonBuilder;
 import com.robindrew.common.json.Gsons;
 import com.robindrew.common.json.IJson;
-import com.robindrew.common.text.LineBuilder;
 import com.robindrew.common.text.Strings;
 import com.robindrew.trading.httpclient.HttpClientException;
 import com.robindrew.trading.httpclient.HttpClientExecutor;
@@ -27,6 +24,7 @@ import com.robindrew.trading.igindex.platform.IgException;
 import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.IgRestError;
+import com.robindrew.trading.igindex.platform.rest.IgRestJson;
 import com.robindrew.trading.log.ITransactionLog;
 
 public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
@@ -48,11 +46,11 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 	}
 
 	protected boolean logRequest() {
-		return true;
+		return false;
 	}
 
 	protected boolean logResponse() {
-		return true;
+		return false;
 	}
 
 	protected int getRetryAttemptLimit() {
@@ -133,15 +131,16 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 
 		// Parse the JSON
 		Class<R> responseType = getResponseType();
-		R parsed = new GsonBuilder().create().fromJson(json, responseType);
+		R jsonObject = IgRestJson.fromJson(json, responseType);
 
 		// Sanity check (TODO: remove this?)
-		String parsedJson = parsed.toString();
-		if (!parsedJson.equals(json)) {
-			log.warn("Before Parsing: {}", json);
-			log.warn("After Parsing:  {}", parsedJson);
+		String objectJson = jsonObject.toString();
+		if (!objectJson.equals(json)) {
+			log.warn("JSON Object does not JSON String");
+			log.warn("JSON String: {}", json);
+			log.warn("JSON Object: {}", objectJson);
 		}
-		return parsed;
+		return jsonObject;
 
 	}
 

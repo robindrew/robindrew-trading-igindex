@@ -1,12 +1,12 @@
 package com.robindrew.trading.igindex.platform.rest.executor;
 
-import com.google.gson.GsonBuilder;
+import com.robindrew.trading.igindex.platform.rest.IgRestJson;
 
 public class IgJsonObject {
 
 	@Override
 	public String toString() {
-		return new GsonBuilder().serializeNulls().create().toJson(this);
+		return IgRestJson.toJson(this);
 	}
 
 }
