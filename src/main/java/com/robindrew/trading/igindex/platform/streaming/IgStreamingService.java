@@ -80,7 +80,9 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 
 	@Override
 	public boolean unsubscribe(IIgInstrument instrument) {
-		Check.notNull("instrument", instrument);
+		if (!isSubscribed(instrument)) {
+			return false;
+		}
 
 		IInstrumentPriceStream<IIgInstrument> stream = getPriceStream(instrument);
 		super.unregisterStream(stream.getInstrument());
