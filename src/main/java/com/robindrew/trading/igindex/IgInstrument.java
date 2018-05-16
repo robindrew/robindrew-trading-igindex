@@ -61,11 +61,11 @@ public class IgInstrument extends Instrument implements IIgInstrument {
 	public static final IgInstrument WEEKDAY_DOW_JONES = new IgInstrument("IX.D.DOW.DAILY.IP", DOW_JONES_30);
 
 	/** FTSE 100 (Weekend). */
-	public static final IgInstrument SUNDAY_FTSE_100 = new IgInstrument("IX.D.SUNFUN.DAILY.IP", FTSE_100);
+	// public static final IgInstrument SUNDAY_FTSE_100 = new IgInstrument("IX.D.SUNFUN.DAILY.IP", FTSE_100);
 	/** DAX (Weekend). */
-	public static final IgInstrument SUNDAY_DAX = new IgInstrument("IX.D.SUNDAX.DAILY.IP", DAX_30);
+	// public static final IgInstrument SUNDAY_DAX = new IgInstrument("IX.D.SUNDAX.DAILY.IP", DAX_30);
 	/** DOW JONES (Weekend). */
-	public static final IgInstrument SUNDAY_DOW_JONES = new IgInstrument("IX.D.SUNDOW.DAILY.IP", DOW_JONES_30);
+	// public static final IgInstrument SUNDAY_DOW_JONES = new IgInstrument("IX.D.SUNDOW.DAILY.IP", DOW_JONES_30);
 
 	/** US CRUDE. */
 	public static final IgInstrument SPOT_US_CRUDE = new IgInstrument("CC.D.CL.USS.IP", US_CRUDE_OIL);
