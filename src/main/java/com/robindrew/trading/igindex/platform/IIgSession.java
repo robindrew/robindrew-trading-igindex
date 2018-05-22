@@ -10,4 +10,6 @@ public interface IIgSession {
 
 	String getAccountSecurityToken();
 
+	String getLightstreamerEndpoint();
+
 }

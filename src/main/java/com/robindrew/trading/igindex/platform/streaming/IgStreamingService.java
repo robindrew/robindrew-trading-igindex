@@ -19,6 +19,7 @@ import com.robindrew.trading.igindex.platform.IgSession;
 import com.robindrew.trading.igindex.platform.rest.IIgRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Markets;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Snapshot;
+import com.robindrew.trading.igindex.platform.streaming.lightstreamer.LighstreamerConnection;
 import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
 import com.robindrew.trading.platform.streaming.AbstractStreamingService;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
@@ -32,7 +33,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 	private static final Logger log = LoggerFactory.getLogger(IgStreamingService.class);
 
 	private final IIgRestService rest;
-	private final AtomicReference<IgStreamingServiceConnection> serviceConnection = new AtomicReference<>();
+	private final AtomicReference<LighstreamerConnection> serviceConnection = new AtomicReference<>();
 
 	public IgStreamingService(IIgRestService rest) {
 		super(IGINDEX);
@@ -61,7 +62,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 		stream.start();
 
 		// Subscribe
-		IgStreamingServiceConnection connection = serviceConnection.get();
+		LighstreamerConnection connection = serviceConnection.get();
 		if (connection != null) {
 			connection.subscribe(stream);
 		}
@@ -87,7 +88,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 		IInstrumentPriceStream<IIgInstrument> stream = getPriceStream(instrument);
 		super.unregisterStream(stream.getInstrument());
 
-		IgStreamingServiceConnection connection = serviceConnection.get();
+		LighstreamerConnection connection = serviceConnection.get();
 		if (connection != null) {
 			connection.unsubscribe(stream);
 		}
@@ -101,7 +102,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 		super.close();
 
 		// Close Connection
-		IgStreamingServiceConnection connection = serviceConnection.get();
+		LighstreamerConnection connection = serviceConnection.get();
 		if (connection != null) {
 			Quietly.close(connection);
 			serviceConnection.set(null);
@@ -115,7 +116,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 			// Connect
 			log.info("Connecting ...");
 			IgSession session = rest.getSession();
-			IgStreamingServiceConnection connection = new IgStreamingServiceConnection(session);
+			LighstreamerConnection connection = new LighstreamerConnection(session);
 			connection.connect(new Listener(connection.getInfo()));
 			serviceConnection.set(connection);
 

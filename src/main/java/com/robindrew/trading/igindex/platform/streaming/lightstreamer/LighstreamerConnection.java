@@ -1,7 +1,4 @@
-package com.robindrew.trading.igindex.platform.streaming;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.robindrew.trading.igindex.platform.streaming.lightstreamer;
 
 import com.lightstreamer.ls_client.ConnectionInfo;
 import com.lightstreamer.ls_client.ConnectionListener;
@@ -10,38 +7,25 @@ import com.lightstreamer.ls_client.HandyTableListener;
 import com.lightstreamer.ls_client.LSClient;
 import com.lightstreamer.ls_client.SubscribedTableKey;
 import com.robindrew.trading.igindex.IIgInstrument;
-import com.robindrew.trading.igindex.platform.IgException;
-import com.robindrew.trading.igindex.platform.IgSession;
+import com.robindrew.trading.igindex.platform.IIgSession;
 import com.robindrew.trading.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
 
-public class IgStreamingServiceConnection implements AutoCloseable {
+public class LighstreamerConnection implements AutoCloseable {
 
-	private static final Logger log = LoggerFactory.getLogger(IgStreamingServiceConnection.class);
-
-	private static ConnectionInfo createInfo(IgSession session) {
-		ConnectionInfo info = new ConnectionInfo();
-		info.user = session.getCredentials().getUsername();
-		info.password = "CST-" + session.getClientSecurityToken() + "|XST-" + session.getAccountSecurityToken();
-		info.pushServerUrl = session.getLightstreamerEndpoint();
-		log.info("Username: {}", info.user);
-		log.info("Server: {}", info.pushServerUrl);
-		return info;
-	}
-
-	private final IgSession session;
+	private final IIgSession session;
 	private final LSClient client = new LSClient();
 	private final ConnectionInfo info;
 
-	public IgStreamingServiceConnection(IgSession session) {
+	public LighstreamerConnection(IIgSession session) {
 		if (session == null) {
 			throw new NullPointerException("session");
 		}
 		this.session = session;
-		this.info = createInfo(session);
+		this.info = new ConnectionInfoBuilder(session).build();
 	}
 
-	public IgSession getSession() {
+	public IIgSession getSession() {
 		return session;
 	}
 
@@ -54,7 +38,7 @@ public class IgStreamingServiceConnection implements AutoCloseable {
 			ConnectionInfo info = getInfo();
 			client.openConnection(info, listener);
 		} catch (Exception e) {
-			throw new IgException(e);
+			throw new LightstreamerException(e);
 		}
 	}
 
@@ -81,7 +65,7 @@ public class IgStreamingServiceConnection implements AutoCloseable {
 			SubscribedTableKey key = client.subscribeTable(tableInfo, listener, false);
 			stream.setKey(key);
 		} catch (Exception e) {
-			throw new IgException(e);
+			throw new LightstreamerException(e);
 		}
 	}
 
@@ -90,7 +74,7 @@ public class IgStreamingServiceConnection implements AutoCloseable {
 			SubscribedTableKey key = stream.getSubscribedTableKey();
 			client.unsubscribeTable(key);
 		} catch (Exception e) {
-			throw new IgException(e);
+			throw new LightstreamerException(e);
 		}
 	}
 

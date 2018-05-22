@@ -2,6 +2,12 @@ package com.robindrew.trading.igindex.platform.streaming.subscription.charttick;
 
 import static com.robindrew.common.collect.PopulatingMap.createConcurrentMap;
 import static com.robindrew.common.text.Strings.number;
+import static com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickFields.FIELD_BID;
+import static com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickFields.FIELD_LTV;
+import static com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickFields.FIELD_OFR;
+import static com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickFields.FIELD_TTV;
+import static com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickFields.FIELD_UTM;
+import static com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickFields.getSubscriptionKey;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import com.lightstreamer.ls_client.ExtendedTableInfo;
 import com.lightstreamer.ls_client.HandyTableListener;
-import com.lightstreamer.ls_client.SubscrException;
 import com.lightstreamer.ls_client.SubscribedTableKey;
 import com.lightstreamer.ls_client.UpdateInfo;
 import com.robindrew.common.collect.PopulatingMap;
@@ -24,7 +29,8 @@ import com.robindrew.common.date.Delay;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IIgInstrument;
-import com.robindrew.trading.igindex.platform.IgException;
+import com.robindrew.trading.igindex.platform.streaming.lightstreamer.ExtendedTableInfoBuilder;
+import com.robindrew.trading.igindex.platform.streaming.lightstreamer.LoggingTableListener;
 import com.robindrew.trading.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
@@ -34,20 +40,23 @@ public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> i
 
 	private static final Logger log = LoggerFactory.getLogger(ChartTickPriceStream.class);
 
-	public static final String FIELD_BID = "BID";
-	public static final String FIELD_OFR = "OFR";
-	/** Last Traded Price. */
-	public static final String FIELD_LTP = "LTP";
-	/** Last Traded Volume. */
-	public static final String FIELD_LTV = "LTV";
-	/** Incremental Trading Volume. */
-	public static final String FIELD_TTV = "TTV";
-	/** Update Time Millis. */
-	public static final String FIELD_UTM = "UTM";
-	public static final String FIELD_DAY_OPEN_MID = "DAY_OPEN_MID";
-	public static final String FIELD_DAY_PERC_CHG_MID = "DAY_PERC_CHG_MID";
-	public static final String FIELD_DAY_HIGH = "DAY_HIGH";
-	public static final String FIELD_DAY_LOW = "DAY_LOW";
+	private static boolean isInvalid(String text) {
+		return text == null || text.isEmpty() || text.equals("null") || text.equals("NULL");
+	}
+
+	private static String getValue(UpdateInfo update, String fieldName, AtomicReference<String> cached) {
+		String value = update.getNewValue(fieldName);
+		if (!isInvalid(value)) {
+			cached.set(value);
+			return value;
+		}
+		value = update.getOldValue(fieldName);
+		if (!isInvalid(value)) {
+			cached.set(value);
+			return value;
+		}
+		return cached.get();
+	}
 
 	/**
 	 * Maintain a count of all updates.
@@ -64,6 +73,9 @@ public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> i
 	private final ExtendedTableInfo tableInfo;
 	private volatile SubscribedTableKey key = null;
 
+	private final AtomicReference<String> cachedBid = new AtomicReference<>();
+	private final AtomicReference<String> cachedOffer = new AtomicReference<>();
+
 	public ChartTickPriceStream(IIgInstrument instrument) {
 		super(instrument);
 		this.precision = instrument.getPrecision();
@@ -76,23 +88,16 @@ public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> i
 		this.tableListener = new TableListener();
 
 		// Lightstreamer: Create the table info
-		try {
-			String[] items = new String[] { getSubscriptionKey(getInstrument()) };
-			String mode = "DISTINCT";
-			String[] fields = new String[] { FIELD_UTM, FIELD_BID, FIELD_OFR, FIELD_TTV, FIELD_LTV };
-			boolean snapshot = true;
-			this.tableInfo = new ExtendedTableInfo(items, mode, fields, snapshot);
-		} catch (SubscrException e) {
-			throw new IgException(e);
-		}
+		ExtendedTableInfoBuilder builder = new ExtendedTableInfoBuilder();
+		builder.setDistinctMode();
+		builder.addItem(getSubscriptionKey(getInstrument()));
+		builder.addFields(FIELD_UTM, FIELD_BID, FIELD_OFR, FIELD_TTV, FIELD_LTV);
+		builder.setSnapshot(true);
+		this.tableInfo = builder.build();
 	}
 
 	public IPricePrecision getPrecision() {
 		return precision;
-	}
-
-	public String getSubscriptionKey(IInstrument instrument) {
-		return "CHART:" + instrument.getName() + ":TICK";
 	}
 
 	@Override
@@ -133,57 +138,6 @@ public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> i
 
 	public boolean isActive() {
 		return active.get();
-	}
-
-	private class TableListener implements HandyTableListener {
-
-		@Override
-		public void onUpdate(int itemPos, String itemName, UpdateInfo updateInfo) {
-			eventConsumer.publishEvent(new OnUpdate(itemPos, itemName, updateInfo));
-		}
-
-		@Override
-		public void onSnapshotEnd(int itemPos, String itemName) {
-			log.info("onSnapshotEnd({} , {})", itemPos, itemName);
-		}
-
-		@Override
-		public void onRawUpdatesLost(int itemPos, String itemName, int lostUpdates) {
-			log.info("onRawUpdatesLost({}, {}, lostUpdates={})", itemPos, itemName, lostUpdates);
-		}
-
-		@Override
-		public void onUnsubscr(int itemPos, String itemName) {
-			log.info("onUnsubscr(" + itemPos + ", " + itemName + ")");
-			active.set(false);
-		}
-
-		@Override
-		public void onUnsubscrAll() {
-			log.info("onUnsubscrAll()");
-			active.set(false);
-		}
-	}
-
-	private AtomicReference<String> cachedBid = new AtomicReference<>();
-	private AtomicReference<String> cachedOffer = new AtomicReference<>();
-
-	private boolean isInvalid(String text) {
-		return text == null || text.isEmpty() || text.equals("null") || text.equals("NULL");
-	}
-
-	private String getValue(UpdateInfo update, String fieldName, AtomicReference<String> cached) {
-		String value = update.getNewValue(fieldName);
-		if (!isInvalid(value)) {
-			cached.set(value);
-			return value;
-		}
-		value = update.getOldValue(fieldName);
-		if (!isInvalid(value)) {
-			cached.set(value);
-			return value;
-		}
-		return cached.get();
 	}
 
 	private class OnUpdate {
@@ -258,6 +212,26 @@ public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> i
 			for (OnUpdate event : events) {
 				event.execute();
 			}
+		}
+	}
+
+	private class TableListener extends LoggingTableListener {
+
+		@Override
+		public void onUpdate(int itemPos, String itemName, UpdateInfo updateInfo) {
+			eventConsumer.publishEvent(new OnUpdate(itemPos, itemName, updateInfo));
+		}
+
+		@Override
+		public void onUnsubscr(int itemPos, String itemName) {
+			super.onUnsubscr(itemPos, itemName);
+			active.set(false);
+		}
+
+		@Override
+		public void onUnsubscrAll() {
+			super.onUnsubscrAll();
+			active.set(false);
 		}
 	}
 

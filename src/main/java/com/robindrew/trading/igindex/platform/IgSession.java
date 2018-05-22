@@ -7,9 +7,9 @@ public class IgSession implements IIgSession {
 	private final IgCredentials credentials;
 	private final IgEnvironment environment;
 
-	private String clientSecurityToken = "";
-	private String accountSecurityToken = "";
-	private String lightstreamerEndpoint = "";
+	private volatile String clientSecurityToken = "";
+	private volatile String accountSecurityToken = "";
+	private volatile String lightstreamerEndpoint = "";
 
 	public IgSession(IgCredentials credentials, IgEnvironment environment) {
 		this.credentials = Check.notNull("credentials", credentials);
