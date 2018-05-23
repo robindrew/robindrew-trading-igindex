@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import com.robindrew.common.util.Check;
 import com.robindrew.common.util.Threads;
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.IgException;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.IgIndexException;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityList;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
 import com.robindrew.trading.platform.positions.AbstractPositionService;
@@ -24,13 +24,13 @@ import com.robindrew.trading.position.closed.IClosedPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
 import com.robindrew.trading.price.precision.IPricePrecision;
 
-public class IgPositionService extends AbstractPositionService {
+public class IgIndexPositionService extends AbstractPositionService {
 
-	private static final Logger log = LoggerFactory.getLogger(IgPositionService.class);
+	private static final Logger log = LoggerFactory.getLogger(IgIndexPositionService.class);
 
-	private final IIgRestService rest;
+	private final IIgIndexRestService rest;
 
-	public IgPositionService(IIgRestService rest) {
+	public IgIndexPositionService(IIgIndexRestService rest) {
 		super(IGINDEX);
 		this.rest = Check.notNull("rest", rest);
 	}
@@ -76,7 +76,7 @@ public class IgPositionService extends AbstractPositionService {
 
 	@Override
 	public MarketPosition openPosition(IPositionOrder order) {
-		IgInstrument instrument = (IgInstrument) order.getInstrument();
+		IgIndexInstrument instrument = (IgIndexInstrument) order.getInstrument();
 		String dealReference = rest.openPosition(instrument.getEpic(), order.getDirection(), order.getTradeSize(), order.getStopLossDistance(), order.getProfitLimitDistance());
 		log.info("[Opened Position] {}", dealReference);
 
@@ -92,7 +92,7 @@ public class IgPositionService extends AbstractPositionService {
 				return position;
 			}
 		}
-		throw new IgException("Missing position for deal: " + dealReference);
+		throw new IgIndexException("Missing position for deal: " + dealReference);
 	}
 
 	@Override

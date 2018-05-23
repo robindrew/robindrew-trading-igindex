@@ -2,9 +2,9 @@ package com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation
 
 import java.math.BigDecimal;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Market extends IgJsonObject {
+public class Market extends IgIndexJsonObject {
 
 	private int delayTime;
 	private String epic;

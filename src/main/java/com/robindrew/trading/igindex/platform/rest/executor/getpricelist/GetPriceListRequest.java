@@ -2,11 +2,11 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpricelist;
 
 import java.time.LocalDateTime;
 
-import com.robindrew.trading.igindex.IgInstrument;
+import com.robindrew.trading.igindex.IgIndexInstrument;
 
 public class GetPriceListRequest {
 
-	private final IgInstrument instrument;
+	private final IgIndexInstrument instrument;
 	private final PriceResolution resolution;
 	private LocalDateTime from = null;
 	private LocalDateTime to = null;
@@ -14,12 +14,12 @@ public class GetPriceListRequest {
 	private int pageSize = 0;
 	private int pageNumber = 0;
 
-	public GetPriceListRequest(IgInstrument instrument, PriceResolution resolution) {
+	public GetPriceListRequest(IgIndexInstrument instrument, PriceResolution resolution) {
 		this.instrument = instrument;
 		this.resolution = resolution;
 	}
 
-	public IgInstrument getInstrument() {
+	public IgIndexInstrument getInstrument() {
 		return instrument;
 	}
 

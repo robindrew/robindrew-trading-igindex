@@ -27,16 +27,15 @@ import com.robindrew.common.concurrent.IEventConsumer;
 import com.robindrew.common.concurrent.LoopingEventConsumerThread;
 import com.robindrew.common.date.Delay;
 import com.robindrew.common.util.Check;
-import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.igindex.IIgInstrument;
+import com.robindrew.trading.igindex.IIgIndexInstrument;
 import com.robindrew.trading.igindex.platform.streaming.lightstreamer.ExtendedTableInfoBuilder;
 import com.robindrew.trading.igindex.platform.streaming.lightstreamer.LoggingTableListener;
-import com.robindrew.trading.igindex.platform.streaming.subscription.IIgInstrumentPriceStream;
+import com.robindrew.trading.igindex.platform.streaming.subscription.IIgIndexInstrumentPriceStream;
 import com.robindrew.trading.platform.streaming.InstrumentPriceStream;
 import com.robindrew.trading.price.candle.IPriceCandle;
 import com.robindrew.trading.price.precision.IPricePrecision;
 
-public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> implements IIgInstrumentPriceStream {
+public class ChartTickPriceStream extends InstrumentPriceStream<IIgIndexInstrument> implements IIgIndexInstrumentPriceStream {
 
 	private static final Logger log = LoggerFactory.getLogger(ChartTickPriceStream.class);
 
@@ -76,7 +75,7 @@ public class ChartTickPriceStream extends InstrumentPriceStream<IIgInstrument> i
 	private final AtomicReference<String> cachedBid = new AtomicReference<>();
 	private final AtomicReference<String> cachedOffer = new AtomicReference<>();
 
-	public ChartTickPriceStream(IIgInstrument instrument) {
+	public ChartTickPriceStream(IIgIndexInstrument instrument) {
 		super(instrument);
 		this.precision = instrument.getPrecision();
 

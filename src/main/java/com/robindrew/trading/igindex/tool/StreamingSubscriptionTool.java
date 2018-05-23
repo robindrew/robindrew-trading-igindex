@@ -3,7 +3,7 @@ package com.robindrew.trading.igindex.tool;
 import java.io.File;
 
 import com.robindrew.common.util.Threads;
-import com.robindrew.trading.igindex.IgInstrument;
+import com.robindrew.trading.igindex.IgIndexInstrument;
 import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
 import com.robindrew.trading.price.candle.io.stream.sink.PriceCandleFileSink;
 
@@ -13,7 +13,7 @@ public class StreamingSubscriptionTool {
 
 		// Configuration
 		String priceDirectory = "c:/temp/prices";
-		IgInstrument instrument = IgInstrument.SPOT_BITCOIN;
+		IgIndexInstrument instrument = IgIndexInstrument.SPOT_BITCOIN;
 
 		// Create the stream
 		try (ChartTickPriceStream priceStream = new ChartTickPriceStream(instrument)) {

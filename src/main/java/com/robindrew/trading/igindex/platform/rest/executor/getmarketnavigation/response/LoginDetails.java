@@ -1,8 +1,8 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.response;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class LoginDetails extends IgJsonObject {
+public class LoginDetails extends IgIndexJsonObject {
 
 	private String accountType;
 	private String currencyIsoCode;

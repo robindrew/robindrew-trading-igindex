@@ -2,13 +2,13 @@ package com.robindrew.trading.igindex.platform;
 
 import com.robindrew.common.util.Check;
 
-public class IgCredentials {
+public class IgIndexCredentials {
 
 	private final String apiKey;
 	private final String username;
 	private final String password;
 
-	public IgCredentials(String apiKey, String username, String password) {
+	public IgIndexCredentials(String apiKey, String username, String password) {
 		this.apiKey = Check.notEmpty("apiKey", apiKey);
 		this.username = Check.notEmpty("username", username);
 		this.password = Check.notEmpty("password", password);

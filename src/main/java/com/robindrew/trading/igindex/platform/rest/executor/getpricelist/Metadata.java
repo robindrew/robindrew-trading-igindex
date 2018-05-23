@@ -1,9 +1,9 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getpricelist;
 
 import com.robindrew.common.json.IJson;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Metadata extends IgJsonObject {
+public class Metadata extends IgIndexJsonObject {
 
 	private final Allowance allowance;
 	private final int size;
@@ -27,7 +27,7 @@ public class Metadata extends IgJsonObject {
 		return pageData;
 	}
 
-	public class Allowance extends IgJsonObject {
+	public class Allowance extends IgIndexJsonObject {
 
 		private final int remainingAllowance;
 		private final int totalAllowance;
@@ -52,7 +52,7 @@ public class Metadata extends IgJsonObject {
 		}
 	}
 
-	public class PageData extends IgJsonObject {
+	public class PageData extends IgIndexJsonObject {
 
 		private final int pageSize;
 		private final int pageNumber;

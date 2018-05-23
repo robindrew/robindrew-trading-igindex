@@ -3,10 +3,10 @@ package com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.InstrumentType;
 
-public class Instrument extends IgJsonObject {
+public class Instrument extends IgIndexJsonObject {
 
 	private String epic;
 	private String expiry;

@@ -1,9 +1,9 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response;
 
 import com.robindrew.common.locale.CurrencyCode;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Account extends IgJsonObject {
+public class Account extends IgIndexJsonObject {
 
 	private String accountId;
 	private String accountName;

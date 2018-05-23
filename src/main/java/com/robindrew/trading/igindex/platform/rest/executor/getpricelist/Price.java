@@ -3,9 +3,9 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpricelist;
 import java.math.BigDecimal;
 
 import com.robindrew.common.json.IJson;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Price extends IgJsonObject {
+public class Price extends IgIndexJsonObject {
 
 	private final BigDecimal bid;
 	private final BigDecimal ask;

@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import com.robindrew.common.date.Dates;
 import com.robindrew.common.date.UnitChrono;
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.IgSession;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.IIgIndexSession;
 import com.robindrew.trading.igindex.platform.rest.executor.closeposition.ClosePositionExecutor;
 import com.robindrew.trading.igindex.platform.rest.executor.closeposition.ClosePositionRequest;
 import com.robindrew.trading.igindex.platform.rest.executor.closeposition.ClosePositionResponse;
@@ -52,17 +52,17 @@ import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 
-public class IgRestService implements IIgRestService {
+public class IgIndexRestService implements IIgIndexRestService {
 
-	private static final Logger log = LoggerFactory.getLogger(IgRestService.class);
+	private static final Logger log = LoggerFactory.getLogger(IgIndexRestService.class);
 
-	private final IgSession session;
+	private final IIgIndexSession session;
 	private final MarketsCache marketsCache;
 	private final IMarketNavigationCache marketNavigationCache;
 	private final ActivityCache activityCache;
 	private final ITransactionLog transactionLog;
 
-	public IgRestService(IgSession session, ITransactionLog transactionLog) {
+	public IgIndexRestService(IIgIndexSession session, ITransactionLog transactionLog) {
 		if (session == null) {
 			throw new NullPointerException("session");
 		}
@@ -77,7 +77,7 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public IgSession getSession() {
+	public IIgIndexSession getSession() {
 		return session;
 	}
 
@@ -163,11 +163,11 @@ public class IgRestService implements IIgRestService {
 		if (latest) {
 			marketsCache.remove(epic);
 		}
-		return marketsCache.get(epic, () -> new GetMarketsExecutor(IgRestService.this, epic).execute());
+		return marketsCache.get(epic, () -> new GetMarketsExecutor(IgIndexRestService.this, epic).execute());
 	}
 
 	@Override
-	public PriceList getPriceList(IgInstrument instrument, UnitChrono unit, int size) {
+	public PriceList getPriceList(IgIndexInstrument instrument, UnitChrono unit, int size) {
 		if (size < 1) {
 			throw new IllegalArgumentException("size=" + size);
 		}
@@ -181,7 +181,7 @@ public class IgRestService implements IIgRestService {
 	}
 
 	@Override
-	public PriceList getPriceList(IgInstrument instrument, UnitChrono unit, LocalDateTime from, LocalDateTime to) {
+	public PriceList getPriceList(IgIndexInstrument instrument, UnitChrono unit, LocalDateTime from, LocalDateTime to) {
 
 		PriceResolution resolution = PriceResolution.valueOf(unit);
 		GetPriceListRequest request = new GetPriceListRequest(instrument, resolution);
@@ -207,7 +207,7 @@ public class IgRestService implements IIgRestService {
 		if (latest) {
 			getMarketNavigationCache().remove(id);
 		}
-		return getMarketNavigationCache().get(id, () -> new GetMarketNavigationExecutor(IgRestService.this, id).execute().getMarketNavigation());
+		return getMarketNavigationCache().get(id, () -> new GetMarketNavigationExecutor(IgIndexRestService.this, id).execute().getMarketNavigation());
 	}
 
 	@Override
@@ -231,12 +231,12 @@ public class IgRestService implements IIgRestService {
 		// Currently limiting to the past 3 months ...
 		LocalDate date = LocalDate.now().minus(Period.ofMonths(3));
 		LocalDateTime dateTime = Dates.toLocalDateTime(date);
-		return activityCache.get(date, () -> new GetActivityExecutor(IgRestService.this, dateTime).execute().getActivities());
+		return activityCache.get(date, () -> new GetActivityExecutor(IgIndexRestService.this, dateTime).execute().getActivities());
 	}
 
 	@Override
 	public ActivityList getActivityList(LocalDateTime from) {
-		return new GetActivityExecutor(IgRestService.this, from).execute().getActivities();
+		return new GetActivityExecutor(IgIndexRestService.this, from).execute().getActivities();
 	}
 
 }

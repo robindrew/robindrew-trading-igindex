@@ -1,30 +1,26 @@
 package com.robindrew.trading.igindex.platform.rest;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
 import com.robindrew.common.json.IJson;
 
-public class IgRestError {
+public class IgIndexRestError {
 
-	private static final Logger log = LoggerFactory.getLogger(IgRestError.class);
+	private static final Logger log = LoggerFactory.getLogger(IgIndexRestError.class);
 
-	public static Optional<IgRestError> getRestError(IJson json) {
+	public static Optional<IgIndexRestError> getRestError(IJson json) {
 		String errorCode = json.get("errorCode", true);
 		if (errorCode == null) {
-			return empty();
+			return Optional.absent();
 		}
-		return of(new IgRestError(errorCode));
+		return Optional.of(new IgIndexRestError(errorCode));
 	}
 
 	private final String errorCode;
 
-	public IgRestError(String errorCode) {
+	public IgIndexRestError(String errorCode) {
 		this.errorCode = errorCode;
 
 		log.warn("[Error Code] " + errorCode);

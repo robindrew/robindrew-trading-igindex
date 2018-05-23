@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.robindrew.common.json.IJson;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.InstrumentType;
 
-public class PriceList extends IgJsonObject implements Iterable<PriceCandle> {
+public class PriceList extends IgIndexJsonObject implements Iterable<PriceCandle> {
 
 	private final List<PriceCandle> prices;
 	private final InstrumentType instrumentType;

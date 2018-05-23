@@ -3,21 +3,21 @@ package com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetMarketNavigationExecutor extends IgRestExecutor<GetMarketNavigationResponse> {
+public class GetMarketNavigationExecutor extends IgIndexRestExecutor<GetMarketNavigationResponse> {
 
 	public static final int ROOT_ID = 0;
 
 	private final int id;
 
-	public GetMarketNavigationExecutor(IIgRestService platform, int id) {
+	public GetMarketNavigationExecutor(IIgIndexRestService platform, int id) {
 		super(platform);
 		this.id = id;
 	}
 
-	public GetMarketNavigationExecutor(IIgRestService platform) {
+	public GetMarketNavigationExecutor(IIgIndexRestService platform) {
 		this(platform, ROOT_ID);
 	}
 

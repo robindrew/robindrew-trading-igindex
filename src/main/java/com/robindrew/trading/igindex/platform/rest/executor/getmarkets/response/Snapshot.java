@@ -3,11 +3,11 @@ package com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketStatus;
 import com.robindrew.trading.price.Mid;
 
-public class Snapshot extends IgJsonObject {
+public class Snapshot extends IgIndexJsonObject {
 
 	private MarketStatus marketStatus;
 	private BigDecimal netChange;

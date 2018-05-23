@@ -3,10 +3,10 @@ package com.robindrew.trading.igindex.platform.rest.executor.getactivity.respons
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.trade.TradeDirection;
 
-public class Details extends IgJsonObject {
+public class Details extends IgIndexJsonObject {
 
 	private String dealReference;
 	private List<Action> actions;

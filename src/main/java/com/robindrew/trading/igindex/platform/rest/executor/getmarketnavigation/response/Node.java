@@ -1,8 +1,8 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation.response;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Node extends IgJsonObject {
+public class Node extends IgIndexJsonObject {
 
 	private String id;
 	private String name;

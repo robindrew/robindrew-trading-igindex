@@ -1,8 +1,8 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class DealingRules extends IgJsonObject {
+public class DealingRules extends IgIndexJsonObject {
 
 	private UnitValue minStepDistance;
 	private UnitValue minDealSize;

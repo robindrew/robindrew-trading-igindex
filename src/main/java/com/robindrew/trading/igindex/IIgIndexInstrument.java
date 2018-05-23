@@ -2,7 +2,7 @@ package com.robindrew.trading.igindex;
 
 import com.robindrew.trading.provider.ITradeDataProviderInstrument;
 
-public interface IIgInstrument extends ITradeDataProviderInstrument {
+public interface IIgIndexInstrument extends ITradeDataProviderInstrument {
 
 	String getEpic();
 

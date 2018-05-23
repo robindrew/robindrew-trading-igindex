@@ -2,8 +2,6 @@ package com.robindrew.trading.igindex.platform.rest.executor;
 
 import static com.robindrew.common.util.Check.notNull;
 
-import java.util.Optional;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -13,6 +11,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
 import com.robindrew.common.json.Gsons;
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.text.Strings;
@@ -20,20 +19,20 @@ import com.robindrew.trading.httpclient.HttpClientException;
 import com.robindrew.trading.httpclient.HttpClientExecutor;
 import com.robindrew.trading.httpclient.HttpClients;
 import com.robindrew.trading.httpclient.HttpRetryException;
-import com.robindrew.trading.igindex.platform.IgException;
-import com.robindrew.trading.igindex.platform.IgSession;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.IgRestError;
-import com.robindrew.trading.igindex.platform.rest.IgRestJson;
+import com.robindrew.trading.igindex.platform.IIgIndexSession;
+import com.robindrew.trading.igindex.platform.IgIndexException;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.IgIndexRestError;
+import com.robindrew.trading.igindex.platform.rest.IgIndexRestJson;
 import com.robindrew.trading.log.ITransactionLog;
 
-public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
+public abstract class IgIndexRestExecutor<R> extends HttpClientExecutor<R> {
 
-	private static final Logger log = LoggerFactory.getLogger(IgRestExecutor.class);
+	private static final Logger log = LoggerFactory.getLogger(IgIndexRestExecutor.class);
 
-	private final IIgRestService rest;
+	private final IIgIndexRestService rest;
 
-	protected IgRestExecutor(IIgRestService rest) {
+	protected IgIndexRestExecutor(IIgIndexRestService rest) {
 		this.rest = notNull("rest", rest);;
 	}
 
@@ -61,7 +60,7 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		return rest.getTransactionLog();
 	}
 
-	public IgSession getSession() {
+	public IIgIndexSession getSession() {
 		return rest.getSession();
 	}
 
@@ -131,7 +130,7 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 
 		// Parse the JSON
 		Class<R> responseType = getResponseType();
-		R jsonObject = IgRestJson.fromJson(json, responseType);
+		R jsonObject = IgIndexRestJson.fromJson(json, responseType);
 
 		// Sanity check (TODO: remove this?)
 		String objectJson = jsonObject.toString();
@@ -157,12 +156,12 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		IJson json = Gsons.parseJson(content);
 
 		// Check for the error code
-		Optional<IgRestError> errorCode = IgRestError.getRestError(json);
+		Optional<IgIndexRestError> errorCode = IgIndexRestError.getRestError(json);
 		if (!errorCode.isPresent()) {
 			return new HttpClientException("Response content: " + content);
 		}
 
-		IgRestError code = errorCode.get();
+		IgIndexRestError code = errorCode.get();
 		log.warn("[HTTP Error] " + code);
 
 		// We only attempt to retry if not logged in
@@ -178,7 +177,7 @@ public abstract class IgRestExecutor<R> extends HttpClientExecutor<R> {
 		// Login!
 		try {
 			rest.login();
-		} catch (IgException e) {
+		} catch (IgIndexException e) {
 			return new HttpClientException("Invalid request: " + request.getRequestLine() + " -> " + code, e);
 		}
 

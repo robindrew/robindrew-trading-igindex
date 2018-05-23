@@ -6,14 +6,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.robindrew.common.text.Strings;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class SearchMarketsExecutor extends IgRestExecutor<SearchMarketsResponse> {
+public class SearchMarketsExecutor extends IgIndexRestExecutor<SearchMarketsResponse> {
 
 	private final String searchTerm;
 
-	public SearchMarketsExecutor(IIgRestService service, String searchTerm) {
+	public SearchMarketsExecutor(IIgIndexRestService service, String searchTerm) {
 		super(service);
 		this.searchTerm = notEmpty("searchTerm", searchTerm);
 	}

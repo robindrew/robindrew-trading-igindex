@@ -3,12 +3,12 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpositions;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetPositionsExecutor extends IgRestExecutor<GetPositionsResponse> {
+public class GetPositionsExecutor extends IgIndexRestExecutor<GetPositionsResponse> {
 
-	public GetPositionsExecutor(IIgRestService service) {
+	public GetPositionsExecutor(IIgIndexRestService service) {
 		super(service);
 	}
 

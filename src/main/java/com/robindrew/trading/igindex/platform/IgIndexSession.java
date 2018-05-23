@@ -2,28 +2,43 @@ package com.robindrew.trading.igindex.platform;
 
 import com.robindrew.common.util.Check;
 
-public class IgSession implements IIgSession {
+public class IgIndexSession implements IIgIndexSession {
 
-	private final IgCredentials credentials;
-	private final IgEnvironment environment;
+	private final IgIndexCredentials credentials;
+	private final IgIndexEnvironment environment;
 
 	private volatile String clientSecurityToken = "";
 	private volatile String accountSecurityToken = "";
 	private volatile String lightstreamerEndpoint = "";
 
-	public IgSession(IgCredentials credentials, IgEnvironment environment) {
+	public IgIndexSession(IgIndexCredentials credentials, IgIndexEnvironment environment) {
 		this.credentials = Check.notNull("credentials", credentials);
 		this.environment = Check.notNull("environment", environment);
 	}
 
 	@Override
-	public IgCredentials getCredentials() {
+	public IgIndexCredentials getCredentials() {
 		return credentials;
 	}
 
 	@Override
-	public IgEnvironment getEnvironment() {
+	public IgIndexEnvironment getEnvironment() {
 		return environment;
+	}
+
+	@Override
+	public boolean hasAccountSecurityToken() {
+		return !accountSecurityToken.isEmpty();
+	}
+
+	@Override
+	public boolean hasClientSecurityToken() {
+		return !clientSecurityToken.isEmpty();
+	}
+
+	@Override
+	public boolean hasLightstreamerEndpoint() {
+		return !lightstreamerEndpoint.isEmpty();
 	}
 
 	@Override
@@ -42,6 +57,7 @@ public class IgSession implements IIgSession {
 		return accountSecurityToken;
 	}
 
+	@Override
 	public String getLightstreamerEndpoint() {
 		if (lightstreamerEndpoint.isEmpty()) {
 			throw new IllegalStateException("lightstreamerEndpoint not set");
@@ -49,6 +65,7 @@ public class IgSession implements IIgSession {
 		return lightstreamerEndpoint;
 	}
 
+	@Override
 	public void setClientSecurityToken(String token) {
 		if (token.isEmpty()) {
 			throw new IllegalArgumentException("token is empty");
@@ -56,6 +73,7 @@ public class IgSession implements IIgSession {
 		this.clientSecurityToken = token;
 	}
 
+	@Override
 	public void setAccountSecurityToken(String token) {
 		if (token.isEmpty()) {
 			throw new IllegalArgumentException("token is empty");
@@ -63,6 +81,7 @@ public class IgSession implements IIgSession {
 		this.accountSecurityToken = token;
 	}
 
+	@Override
 	public void setLightstreamerEndpoint(String endpoint) {
 		if (endpoint.isEmpty()) {
 			throw new IllegalArgumentException("token is empty");
@@ -74,13 +93,4 @@ public class IgSession implements IIgSession {
 	public String toString() {
 		return credentials + "/" + environment;
 	}
-
-	public boolean hasAccountSecurityToken() {
-		return !accountSecurityToken.isEmpty();
-	}
-
-	public boolean hasClientSecurityToken() {
-		return !clientSecurityToken.isEmpty();
-	}
-
 }

@@ -2,13 +2,13 @@ package com.robindrew.trading.igindex.platform.rest.executor.closeposition;
 
 import java.math.BigDecimal;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getpositions.MarketPosition;
 import com.robindrew.trading.igindex.platform.rest.executor.openposition.request.OrderType;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 
-public class ClosePositionRequest extends IgJsonObject {
+public class ClosePositionRequest extends IgIndexJsonObject {
 
 	public static ClosePositionRequest forPosition(MarketPosition position) {
 		String dealId = position.getPosition().getDealId();

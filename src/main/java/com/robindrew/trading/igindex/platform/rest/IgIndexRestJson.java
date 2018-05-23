@@ -3,7 +3,7 @@ package com.robindrew.trading.igindex.platform.rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class IgRestJson {
+public class IgIndexRestJson {
 
 	public static final Gson buildGson() {
 		return new GsonBuilder().serializeNulls().disableHtmlEscaping().create();

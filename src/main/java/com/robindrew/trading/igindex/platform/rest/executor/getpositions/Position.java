@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.robindrew.common.locale.CurrencyCode;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.LimitedRiskPremium;
 import com.robindrew.trading.trade.TradeDirection;
 
-public class Position extends IgJsonObject {
+public class Position extends IgIndexJsonObject {
 
 	private BigDecimal contractSize;
 	private String createdDate;

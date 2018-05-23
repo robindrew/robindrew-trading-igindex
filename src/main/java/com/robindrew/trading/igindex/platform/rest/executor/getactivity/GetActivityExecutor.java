@@ -7,18 +7,18 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
 import com.robindrew.common.date.Dates;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetActivityExecutor extends IgRestExecutor<GetActivityResponse> {
+public class GetActivityExecutor extends IgIndexRestExecutor<GetActivityResponse> {
 
 	private final LocalDateTime date;
 
-	public GetActivityExecutor(IIgRestService service, LocalDate date) {
+	public GetActivityExecutor(IIgIndexRestService service, LocalDate date) {
 		this(service, Dates.toLocalDateTime(date));
 	}
 
-	public GetActivityExecutor(IIgRestService service, LocalDateTime date) {
+	public GetActivityExecutor(IIgIndexRestService service, LocalDateTime date) {
 		super(service);
 		this.date = date;
 	}

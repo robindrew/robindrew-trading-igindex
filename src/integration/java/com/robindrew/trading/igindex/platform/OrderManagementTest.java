@@ -7,9 +7,9 @@ import org.junit.Test;
 
 import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.common.util.Threads;
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.IgRestService;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.IgIndexRestService;
 import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.log.StubTransactionLog;
 import com.robindrew.trading.platform.positions.IPositionService;
@@ -23,20 +23,20 @@ public class OrderManagementTest {
 	@Test
 	public void opneAndCloseOrder() {
 
-		IgInstrument instrument = IgInstrument.SPOT_GBP_USD;
+		IgIndexInstrument instrument = IgIndexInstrument.SPOT_GBP_USD;
 
 		String apiKey = System.getProperty("apiKey");
 		String username = System.getProperty("username");
 		String password = System.getProperty("password");
 
-		IgCredentials credentials = new IgCredentials(apiKey, username, password);
-		IgEnvironment environment = IgEnvironment.DEMO;
-		IgSession session = new IgSession(credentials, environment);
+		IgIndexCredentials credentials = new IgIndexCredentials(apiKey, username, password);
+		IgIndexEnvironment environment = IgIndexEnvironment.DEMO;
+		IgIndexSession session = new IgIndexSession(credentials, environment);
 		ITransactionLog log = new StubTransactionLog();
-		IIgRestService rest = new IgRestService(session, log);
+		IIgIndexRestService rest = new IgIndexRestService(session, log);
 		rest.login();
 
-		IgTradingPlatform platform = new IgTradingPlatform(rest);
+		IgIndexTradingPlatform platform = new IgIndexTradingPlatform(rest);
 		IPositionService positions = platform.getPositionService();
 
 		TradeDirection direction = TradeDirection.SELL;

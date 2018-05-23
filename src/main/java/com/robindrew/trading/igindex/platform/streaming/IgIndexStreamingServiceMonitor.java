@@ -8,17 +8,17 @@ import org.slf4j.LoggerFactory;
 import com.robindrew.common.concurrent.LoopingRunnableThread;
 import com.robindrew.common.date.UnitTime;
 import com.robindrew.common.util.Check;
-import com.robindrew.trading.igindex.platform.IIgTradingPlatform;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
+import com.robindrew.trading.igindex.platform.IIgIndexTradingPlatform;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
 
-public class IgStreamingServiceMonitor implements AutoCloseable {
+public class IgIndexStreamingServiceMonitor implements AutoCloseable {
 
-	private static final Logger log = LoggerFactory.getLogger(IgStreamingServiceMonitor.class);
+	private static final Logger log = LoggerFactory.getLogger(IgIndexStreamingServiceMonitor.class);
 
-	private final IIgTradingPlatform platform;
+	private final IIgIndexTradingPlatform platform;
 	private final LoopingRunnableThread thread;
 
-	public IgStreamingServiceMonitor(IIgTradingPlatform platform) {
+	public IgIndexStreamingServiceMonitor(IIgIndexTradingPlatform platform) {
 		this.platform = Check.notNull("platform", platform);
 		this.thread = new LoopingRunnableThread("IgStreamingServiceMonitor", new Reconnector());
 		this.thread.setPause(new UnitTime(1, MINUTES));
@@ -38,9 +38,9 @@ public class IgStreamingServiceMonitor implements AutoCloseable {
 		@Override
 		public void run() {
 			try {
-				IIgStreamingService streaming = platform.getStreamingService();
+				IIgIndexStreamingService streaming = platform.getStreamingService();
 				if (!streaming.isConnected()) {
-					IIgRestService rest = platform.getRestService();
+					IIgIndexRestService rest = platform.getRestService();
 
 					// Login
 					rest.login();

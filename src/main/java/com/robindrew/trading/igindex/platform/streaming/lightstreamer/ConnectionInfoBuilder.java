@@ -5,15 +5,15 @@ import org.slf4j.LoggerFactory;
 
 import com.lightstreamer.ls_client.ConnectionInfo;
 import com.robindrew.common.util.Check;
-import com.robindrew.trading.igindex.platform.IIgSession;
+import com.robindrew.trading.igindex.platform.IIgIndexSession;
 
 public class ConnectionInfoBuilder {
 
 	private static final Logger log = LoggerFactory.getLogger(ConnectionInfoBuilder.class);
 
-	private final IIgSession session;
+	private final IIgIndexSession session;
 
-	public ConnectionInfoBuilder(IIgSession session) {
+	public ConnectionInfoBuilder(IIgIndexSession session) {
 		this.session = Check.notNull("session", session);
 	}
 

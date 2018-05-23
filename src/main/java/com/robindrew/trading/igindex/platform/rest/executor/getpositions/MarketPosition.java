@@ -7,15 +7,15 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.position.Positions;
 import com.robindrew.trading.position.market.IMarketPosition;
 import com.robindrew.trading.position.market.IMarketPrice;
 import com.robindrew.trading.position.market.MarketPrice;
 import com.robindrew.trading.trade.TradeDirection;
 
-public class MarketPosition extends IgJsonObject implements IMarketPosition, Comparable<MarketPosition> {
+public class MarketPosition extends IgIndexJsonObject implements IMarketPosition, Comparable<MarketPosition> {
 
 	private Position position;
 	private Market market;
@@ -88,7 +88,7 @@ public class MarketPosition extends IgJsonObject implements IMarketPosition, Com
 
 	@Override
 	public IInstrument getInstrument() {
-		return new IgInstrument(getEpic(), getInstrumentType());
+		return new IgIndexInstrument(getEpic(), getInstrumentType());
 	}
 
 	@Override

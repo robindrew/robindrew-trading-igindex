@@ -2,9 +2,9 @@ package com.robindrew.trading.igindex.platform.rest.executor.getaccounts.respons
 
 import java.math.BigDecimal;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Balance extends IgJsonObject {
+public class Balance extends IgIndexJsonObject {
 
 	private BigDecimal balance;
 	private BigDecimal deposit;

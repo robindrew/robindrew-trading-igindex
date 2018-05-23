@@ -5,14 +5,14 @@ import static com.robindrew.common.util.Check.notEmpty;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetMarketsExecutor extends IgRestExecutor<GetMarketsResponse> {
+public class GetMarketsExecutor extends IgIndexRestExecutor<GetMarketsResponse> {
 
 	private final String epic;
 
-	public GetMarketsExecutor(IIgRestService service, String epic) {
+	public GetMarketsExecutor(IIgIndexRestService service, String epic) {
 		super(service);
 		this.epic = notEmpty("epic", epic);
 	}

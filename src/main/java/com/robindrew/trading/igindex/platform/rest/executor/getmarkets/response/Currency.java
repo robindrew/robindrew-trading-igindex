@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.locale.CurrencyCode;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Currency extends IgJsonObject {
+public class Currency extends IgIndexJsonObject {
 
 	private final CurrencyCode code;
 	private final String symbol;

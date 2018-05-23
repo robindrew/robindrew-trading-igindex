@@ -1,8 +1,8 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Markets extends IgJsonObject {
+public class Markets extends IgIndexJsonObject {
 
 	private Instrument instrument;
 	private DealingRules dealingRules;

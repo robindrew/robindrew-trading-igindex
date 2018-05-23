@@ -1,8 +1,8 @@
 package com.robindrew.trading.igindex.platform.rest.executor.getactivity.response;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Action extends IgJsonObject {
+public class Action extends IgIndexJsonObject {
 
 	private String actionType;
 	private String affectedDealId;

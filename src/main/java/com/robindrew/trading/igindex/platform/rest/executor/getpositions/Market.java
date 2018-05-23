@@ -3,9 +3,9 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpositions;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Market extends IgJsonObject {
+public class Market extends IgIndexJsonObject {
 
 	private String instrumentName;
 	private String expiry;

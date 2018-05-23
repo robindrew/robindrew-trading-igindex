@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import com.robindrew.common.util.Threads;
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.igindex.IIgInstrument;
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.IgRestService;
-import com.robindrew.trading.igindex.platform.streaming.IgStreamingService;
+import com.robindrew.trading.igindex.IIgIndexInstrument;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.IgIndexRestService;
+import com.robindrew.trading.igindex.platform.streaming.IIgIndexStreamingService;
 import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.log.StubTransactionLog;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
@@ -20,27 +20,27 @@ public class StreamingPriceStrategyTest {
 	@Test
 	public void testStreamingPriceStrategy() {
 
-		IgInstrument instrument = IgInstrument.SPOT_USD_JPY;
+		IgIndexInstrument instrument = IgIndexInstrument.SPOT_USD_JPY;
 
 		String apiKey = System.getProperty("apiKey");
 		String username = System.getProperty("username");
 		String password = System.getProperty("password");
 
-		IgCredentials credentials = new IgCredentials(apiKey, username, password);
-		IgEnvironment environment = IgEnvironment.DEMO;
-		IgSession session = new IgSession(credentials, environment);
+		IgIndexCredentials credentials = new IgIndexCredentials(apiKey, username, password);
+		IgIndexEnvironment environment = IgIndexEnvironment.DEMO;
+		IgIndexSession session = new IgIndexSession(credentials, environment);
 		ITransactionLog log = new StubTransactionLog();
-		IIgRestService rest = new IgRestService(session, log);
+		IIgIndexRestService rest = new IgIndexRestService(session, log);
 		rest.login();
 
-		IgTradingPlatform platform = new IgTradingPlatform(rest);
+		IgIndexTradingPlatform platform = new IgIndexTradingPlatform(rest);
 
 		TestTradingStrategy strategy = new TestTradingStrategy(platform, instrument);
 		strategy.start();
 
 		// Register the stream to make it available through the platform
-		IgStreamingService streaming = platform.getStreamingService();
-		IInstrumentPriceStream<IIgInstrument> priceStream = streaming.getPriceStream(instrument);
+		IIgIndexStreamingService streaming = platform.getStreamingService();
+		IInstrumentPriceStream<IIgIndexInstrument> priceStream = streaming.getPriceStream(instrument);
 
 		// Register all the sinks
 		priceStream.register(strategy);
@@ -51,9 +51,9 @@ public class StreamingPriceStrategyTest {
 		Threads.sleepForever();
 	}
 
-	class TestTradingStrategy extends LatestPriceTradingStrategy<IIgInstrument> {
+	class TestTradingStrategy extends LatestPriceTradingStrategy<IIgIndexInstrument> {
 
-		public TestTradingStrategy(IgTradingPlatform platform, IInstrument instrument) {
+		public TestTradingStrategy(IgIndexTradingPlatform platform, IInstrument instrument) {
 			super("TestTradingStrategy", platform, instrument);
 		}
 

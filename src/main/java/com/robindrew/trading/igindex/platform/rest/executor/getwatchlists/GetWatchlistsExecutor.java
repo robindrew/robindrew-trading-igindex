@@ -3,12 +3,12 @@ package com.robindrew.trading.igindex.platform.rest.executor.getwatchlists;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetWatchlistsExecutor extends IgRestExecutor<Boolean> {
+public class GetWatchlistsExecutor extends IgIndexRestExecutor<Boolean> {
 
-	public GetWatchlistsExecutor(IIgRestService platform) {
+	public GetWatchlistsExecutor(IIgIndexRestService platform) {
 		super(platform);
 	}
 

@@ -6,14 +6,14 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class LoginExecutor extends IgRestExecutor<LoginResponse> {
+public class LoginExecutor extends IgIndexRestExecutor<LoginResponse> {
 
 	private static final Logger log = LoggerFactory.getLogger(LoginExecutor.class);
 
-	public LoginExecutor(IIgRestService platform) {
+	public LoginExecutor(IIgIndexRestService platform) {
 		super(platform);
 	}
 

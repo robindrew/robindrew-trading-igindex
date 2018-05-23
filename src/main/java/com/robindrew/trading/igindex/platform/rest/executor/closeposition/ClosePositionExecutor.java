@@ -3,14 +3,14 @@ package com.robindrew.trading.igindex.platform.rest.executor.closeposition;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class ClosePositionExecutor extends IgRestExecutor<ClosePositionResponse> {
+public class ClosePositionExecutor extends IgIndexRestExecutor<ClosePositionResponse> {
 
 	private final ClosePositionRequest jsonRequest;
 
-	public ClosePositionExecutor(IIgRestService service, ClosePositionRequest jsonRequest) {
+	public ClosePositionExecutor(IIgIndexRestService service, ClosePositionRequest jsonRequest) {
 		super(service);
 		if (jsonRequest == null) {
 			throw new NullPointerException("jsonRequest");

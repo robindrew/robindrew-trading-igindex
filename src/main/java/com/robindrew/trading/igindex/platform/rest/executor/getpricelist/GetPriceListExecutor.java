@@ -3,15 +3,15 @@ package com.robindrew.trading.igindex.platform.rest.executor.getpricelist;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetPriceListExecutor extends IgRestExecutor<GetPriceListResponse> {
+public class GetPriceListExecutor extends IgIndexRestExecutor<GetPriceListResponse> {
 
 	private final GetPriceListRequest request;
 
-	public GetPriceListExecutor(IIgRestService service, GetPriceListRequest request) {
+	public GetPriceListExecutor(IIgIndexRestService service, GetPriceListRequest request) {
 		super(service);
 		if (request == null) {
 			throw new NullPointerException("instrument");
@@ -26,7 +26,7 @@ public class GetPriceListExecutor extends IgRestExecutor<GetPriceListResponse> {
 
 	@Override
 	public HttpUriRequest createRequest() {
-		IgInstrument instrument = request.getInstrument();
+		IgIndexInstrument instrument = request.getInstrument();
 
 		HttpGet request = new HttpGet(getUrl("/prices/") + instrument.getEpic() + getQuery());
 		addStandardHeaders(request);

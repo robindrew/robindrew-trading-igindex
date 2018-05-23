@@ -2,9 +2,9 @@ package com.robindrew.trading.igindex.platform.rest.executor.getactivity.respons
 
 import java.time.LocalDateTime;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class Activity extends IgJsonObject {
+public class Activity extends IgIndexJsonObject {
 
 	private String date;
 	private String epic;

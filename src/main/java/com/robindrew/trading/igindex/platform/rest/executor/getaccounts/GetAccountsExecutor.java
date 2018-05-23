@@ -3,12 +3,12 @@ package com.robindrew.trading.igindex.platform.rest.executor.getaccounts;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class GetAccountsExecutor extends IgRestExecutor<GetAccountsResponse> {
+public class GetAccountsExecutor extends IgIndexRestExecutor<GetAccountsResponse> {
 
-	public GetAccountsExecutor(IIgRestService service) {
+	public GetAccountsExecutor(IIgIndexRestService service) {
 		super(service);
 	}
 

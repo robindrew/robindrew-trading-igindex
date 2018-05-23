@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.robindrew.common.json.IJson;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class PriceCandle extends IgJsonObject {
+public class PriceCandle extends IgIndexJsonObject {
 
 	private final LocalDateTime snapshotTimeUTC;
 	private final Price openPrice;

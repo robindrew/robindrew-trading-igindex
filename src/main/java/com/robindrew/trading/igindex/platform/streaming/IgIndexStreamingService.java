@@ -14,9 +14,9 @@ import com.lightstreamer.ls_client.PushServerException;
 import com.robindrew.common.util.Check;
 import com.robindrew.common.util.Java;
 import com.robindrew.common.util.Quietly;
-import com.robindrew.trading.igindex.IIgInstrument;
-import com.robindrew.trading.igindex.platform.IgSession;
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
+import com.robindrew.trading.igindex.IIgIndexInstrument;
+import com.robindrew.trading.igindex.platform.IIgIndexSession;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Markets;
 import com.robindrew.trading.igindex.platform.rest.executor.getmarkets.response.Snapshot;
 import com.robindrew.trading.igindex.platform.streaming.lightstreamer.LighstreamerConnection;
@@ -28,14 +28,14 @@ import com.robindrew.trading.price.candle.TickPriceCandle;
 import com.robindrew.trading.price.decimal.Decimal;
 import com.robindrew.trading.price.decimal.IDecimal;
 
-public class IgStreamingService extends AbstractStreamingService<IIgInstrument> implements IIgStreamingService {
+public class IgIndexStreamingService extends AbstractStreamingService<IIgIndexInstrument> implements IIgIndexStreamingService {
 
-	private static final Logger log = LoggerFactory.getLogger(IgStreamingService.class);
+	private static final Logger log = LoggerFactory.getLogger(IgIndexStreamingService.class);
 
-	private final IIgRestService rest;
+	private final IIgIndexRestService rest;
 	private final AtomicReference<LighstreamerConnection> serviceConnection = new AtomicReference<>();
 
-	public IgStreamingService(IIgRestService rest) {
+	public IgIndexStreamingService(IIgIndexRestService rest) {
 		super(IGINDEX);
 		this.rest = Check.notNull("rest", rest);
 	}
@@ -46,7 +46,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 	}
 
 	@Override
-	public boolean subscribe(IIgInstrument instrument) {
+	public boolean subscribe(IIgIndexInstrument instrument) {
 		if (isSubscribed(instrument)) {
 			return true;
 		}
@@ -69,7 +69,7 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 		return true;
 	}
 
-	private ITickPriceCandle getLatestPrice(IIgInstrument instrument) {
+	private ITickPriceCandle getLatestPrice(IIgIndexInstrument instrument) {
 		int decimalPlaces = instrument.getPrecision().getDecimalPlaces();
 		Markets markets = rest.getMarkets(instrument.getEpic(), true);
 		Snapshot snapshot = markets.getSnapshot();
@@ -80,12 +80,12 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 	}
 
 	@Override
-	public boolean unsubscribe(IIgInstrument instrument) {
+	public boolean unsubscribe(IIgIndexInstrument instrument) {
 		if (!isSubscribed(instrument)) {
 			return false;
 		}
 
-		IInstrumentPriceStream<IIgInstrument> stream = getPriceStream(instrument);
+		IInstrumentPriceStream<IIgIndexInstrument> stream = getPriceStream(instrument);
 		super.unregisterStream(stream.getInstrument());
 
 		LighstreamerConnection connection = serviceConnection.get();
@@ -115,13 +115,13 @@ public class IgStreamingService extends AbstractStreamingService<IIgInstrument> 
 
 			// Connect
 			log.info("Connecting ...");
-			IgSession session = rest.getSession();
+			IIgIndexSession session = rest.getSession();
 			LighstreamerConnection connection = new LighstreamerConnection(session);
 			connection.connect(new Listener(connection.getInfo()));
 			serviceConnection.set(connection);
 
 			// Subscribe existing subscriptions
-			for (IInstrumentPriceStream<IIgInstrument> stream : getPriceStreams()) {
+			for (IInstrumentPriceStream<IIgIndexInstrument> stream : getPriceStreams()) {
 				connection.subscribe(stream);
 			}
 

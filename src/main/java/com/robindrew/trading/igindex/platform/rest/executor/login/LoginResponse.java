@@ -2,11 +2,11 @@ package com.robindrew.trading.igindex.platform.rest.executor.login;
 
 import java.util.List;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.igindex.platform.rest.executor.login.response.Account;
 import com.robindrew.trading.igindex.platform.rest.executor.login.response.AccountInfo;
 
-public class LoginResponse extends IgJsonObject {
+public class LoginResponse extends IgIndexJsonObject {
 
 	private String accountType;
 	private AccountInfo accountInfo;

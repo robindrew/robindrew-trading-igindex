@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 
 import com.robindrew.common.json.IJson;
 import com.robindrew.common.locale.CurrencyCode;
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class MarginDepositBand extends IgJsonObject {
+public class MarginDepositBand extends IgIndexJsonObject {
 
 	private final BigDecimal min;
 	private final BigDecimal max;

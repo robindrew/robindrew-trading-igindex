@@ -1,6 +1,6 @@
 package com.robindrew.trading.igindex.platform;
 
-public enum IgEnvironment {
+public enum IgIndexEnvironment {
 
 	/** Production Environment. */
 	PROD("https://api.ig.com/gateway/deal"),
@@ -9,7 +9,7 @@ public enum IgEnvironment {
 
 	private final String restUrl;
 
-	private IgEnvironment(String restUrl) {
+	private IgIndexEnvironment(String restUrl) {
 		this.restUrl = restUrl;
 	}
 

@@ -2,9 +2,9 @@ package com.robindrew.trading.igindex.platform.rest.executor.getmarketnavigation
 
 import java.util.List;
 
-import com.robindrew.trading.igindex.platform.rest.executor.IgJsonObject;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 
-public class MarketNavigation extends IgJsonObject {
+public class MarketNavigation extends IgIndexJsonObject {
 
 	private final List<Node> nodes;
 	private final List<Market> markets;

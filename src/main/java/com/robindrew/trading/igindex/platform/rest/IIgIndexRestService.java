@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.robindrew.common.date.UnitChrono;
-import com.robindrew.trading.igindex.IgInstrument;
-import com.robindrew.trading.igindex.platform.IgSession;
+import com.robindrew.trading.igindex.IgIndexInstrument;
+import com.robindrew.trading.igindex.platform.IIgIndexSession;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.Account;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType;
 import com.robindrew.trading.igindex.platform.rest.executor.getactivity.response.ActivityList;
@@ -21,19 +21,19 @@ import com.robindrew.trading.log.ITransactionLog;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.trade.TradeDirection;
 
-public interface IIgRestService {
+public interface IIgIndexRestService {
 
 	ITransactionLog getTransactionLog();
 
-	IgSession getSession();
+	IIgIndexSession getSession();
 
 	LoginResponse login();
 
 	void logout();
 
-	PriceList getPriceList(IgInstrument instrument, UnitChrono unit, int size);
+	PriceList getPriceList(IgIndexInstrument instrument, UnitChrono unit, int size);
 
-	PriceList getPriceList(IgInstrument instrument, UnitChrono unit, LocalDateTime from, LocalDateTime to);
+	PriceList getPriceList(IgIndexInstrument instrument, UnitChrono unit, LocalDateTime from, LocalDateTime to);
 
 	List<Account> getAccountList();
 

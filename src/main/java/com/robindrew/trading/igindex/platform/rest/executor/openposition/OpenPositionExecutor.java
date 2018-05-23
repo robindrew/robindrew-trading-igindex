@@ -3,14 +3,14 @@ package com.robindrew.trading.igindex.platform.rest.executor.openposition;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 
-import com.robindrew.trading.igindex.platform.rest.IIgRestService;
-import com.robindrew.trading.igindex.platform.rest.executor.IgRestExecutor;
+import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
+import com.robindrew.trading.igindex.platform.rest.executor.IgIndexRestExecutor;
 
-public class OpenPositionExecutor extends IgRestExecutor<OpenPositionResponse> {
+public class OpenPositionExecutor extends IgIndexRestExecutor<OpenPositionResponse> {
 
 	private final OpenPositionRequest request;
 
-	public OpenPositionExecutor(IIgRestService service, OpenPositionRequest request) {
+	public OpenPositionExecutor(IIgIndexRestService service, OpenPositionRequest request) {
 		super(service);
 		if (request == null) {
 			throw new NullPointerException("request");
