@@ -42,6 +42,11 @@ public class IgIndexInstrument extends Instrument implements IIgIndexInstrument 
 	/** USD/JPY. */
 	public static final IgIndexInstrument SPOT_USD_JPY = new IgIndexInstrument("CS.D.USDJPY.TODAY.IP", USD_JPY);
 
+	/** GOLD. */
+	public static final IgIndexInstrument SPOT_XAU_USD = new IgIndexInstrument("CS.D.USCGC.TODAY.IP", XAU_USD);
+	/** SILVER. */
+	public static final IgIndexInstrument SPOT_XAG_USD = new IgIndexInstrument("CS.D.USCSI.TODAY.IP", XAG_USD);
+
 	/** Bitcoin. */
 	public static final IgIndexInstrument SPOT_BITCOIN = new IgIndexInstrument("CS.D.BITCOIN.TODAY.IP", BITCOIN);
 	/** Ether. */
@@ -71,11 +76,6 @@ public class IgIndexInstrument extends Instrument implements IIgIndexInstrument 
 	public static final IgIndexInstrument SPOT_US_CRUDE = new IgIndexInstrument("CC.D.CL.USS.IP", US_CRUDE_OIL);
 	/** BRENT CRUDE. */
 	public static final IgIndexInstrument SPOT_BRENT_CRUDE = new IgIndexInstrument("CC.D.LCO.USS.IP", BRENT_CRUDE_OIL);
-
-	/** GOLD. */
-	public static final IgIndexInstrument SPOT_GOLD = new IgIndexInstrument("CS.D.USCGC.TODAY.IP", XAU_USD);
-	/** SILVER. */
-	public static final IgIndexInstrument SPOT_SILVER = new IgIndexInstrument("CS.D.USCSI.TODAY.IP", XAG_USD);
 
 	private final IPricePrecision precision = new PricePrecision(2);
 
