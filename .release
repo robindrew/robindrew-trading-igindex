@@ -1,0 +1,11 @@
+<release>
+   <groupId>com.robindrew</groupId>
+   <artifactId>robindrew-trading-igindex</artifactId>
+   <version>3.0</version>
+   <releaseVersions>
+      <releaseVersion>
+         <hash>1d39122584be84120946b9053bfc0513</hash>
+         <version>3.0.1</version>
+      </releaseVersion>
+   </releaseVersions>
+</release>
