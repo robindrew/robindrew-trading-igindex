@@ -8,8 +8,8 @@ import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.Account;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType;
 import com.robindrew.trading.platform.account.AbstractAccountService;
-import com.robindrew.trading.trade.balance.IMoney;
-import com.robindrew.trading.trade.balance.Money;
+import com.robindrew.trading.trade.money.IMoney;
+import com.robindrew.trading.trade.money.Money;
 
 public class IgIndexAccountService extends AbstractAccountService {
 
