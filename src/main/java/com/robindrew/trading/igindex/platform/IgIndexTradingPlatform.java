@@ -1,7 +1,9 @@
 package com.robindrew.trading.igindex.platform;
 
+import static com.robindrew.common.locale.CurrencyCode.GBP;
 import static com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType.SPREADBET;
 
+import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.igindex.IIgIndexInstrument;
 import com.robindrew.trading.igindex.platform.account.IgIndexAccountService;
@@ -20,7 +22,7 @@ public class IgIndexTradingPlatform extends TradingPlatform<IIgIndexInstrument> 
 
 	public IgIndexTradingPlatform(IIgIndexRestService rest) {
 		this.rest = Check.notNull("rest", rest);
-		this.account = new IgIndexAccountService(rest, SPREADBET);
+		this.account = new IgIndexAccountService(rest, SPREADBET, GBP);
 		this.position = new IgIndexPositionService(rest);
 		this.streaming = new IgIndexStreamingService(rest);
 	}

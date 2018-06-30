@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import com.robindrew.common.util.Check;
 import com.robindrew.common.util.Threads;
-import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IgIndexInstrument;
 import com.robindrew.trading.igindex.platform.IgIndexException;
 import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
@@ -22,7 +21,6 @@ import com.robindrew.trading.platform.positions.AbstractPositionService;
 import com.robindrew.trading.position.IPosition;
 import com.robindrew.trading.position.closed.IClosedPosition;
 import com.robindrew.trading.position.order.IPositionOrder;
-import com.robindrew.trading.price.precision.IPricePrecision;
 
 public class IgIndexPositionService extends AbstractPositionService {
 
@@ -93,10 +91,5 @@ public class IgIndexPositionService extends AbstractPositionService {
 			}
 		}
 		throw new IgIndexException("Missing position for deal: " + dealReference);
-	}
-
-	@Override
-	public IPricePrecision getPrecision(IInstrument instrument) {
-		throw new UnsupportedOperationException();
 	}
 }
