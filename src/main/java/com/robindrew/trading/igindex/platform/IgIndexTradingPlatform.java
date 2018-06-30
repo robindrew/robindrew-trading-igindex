@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform;
 import static com.robindrew.common.locale.CurrencyCode.GBP;
 import static com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType.SPREADBET;
 
-import com.robindrew.common.locale.CurrencyCode;
 import com.robindrew.common.util.Check;
 import com.robindrew.trading.igindex.IIgIndexInstrument;
 import com.robindrew.trading.igindex.platform.account.IgIndexAccountService;
