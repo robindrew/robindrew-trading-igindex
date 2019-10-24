@@ -7,5 +7,9 @@
          <hash>1d39122584be84120946b9053bfc0513</hash>
          <version>3.0.1</version>
       </releaseVersion>
+      <releaseVersion>
+         <hash>cb834dabc074b208db3446c674b999ce</hash>
+         <version>3.0.2</version>
+      </releaseVersion>
    </releaseVersions>
 </release>
