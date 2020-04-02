@@ -23,8 +23,8 @@ import com.robindrew.trading.igindex.platform.streaming.lightstreamer.Lighstream
 import com.robindrew.trading.igindex.platform.streaming.subscription.charttick.ChartTickPriceStream;
 import com.robindrew.trading.platform.streaming.AbstractStreamingService;
 import com.robindrew.trading.platform.streaming.IInstrumentPriceStream;
-import com.robindrew.trading.price.candle.ITickPriceCandle;
-import com.robindrew.trading.price.candle.TickPriceCandle;
+import com.robindrew.trading.price.candle.tick.ITickPriceCandle;
+import com.robindrew.trading.price.candle.tick.TickPriceCandle;
 import com.robindrew.trading.price.decimal.Decimal;
 import com.robindrew.trading.price.decimal.IDecimal;
 
