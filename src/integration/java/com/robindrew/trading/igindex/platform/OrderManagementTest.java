@@ -42,8 +42,8 @@ public class OrderManagementTest {
 		TradeDirection direction = TradeDirection.SELL;
 		CurrencyCode tradeCurrency = CurrencyCode.GBP;
 		BigDecimal tradeSize = new BigDecimal("0.5");
-		int stopLossDistance = 100;
-		int profitLimitDistance = 150;
+		BigDecimal stopLossDistance = new BigDecimal(100);
+		BigDecimal profitLimitDistance = new BigDecimal(150);
 
 		// Execute trade
 		IPositionOrder order = new PositionOrder(instrument, direction, tradeCurrency, tradeSize, stopLossDistance, profitLimitDistance);

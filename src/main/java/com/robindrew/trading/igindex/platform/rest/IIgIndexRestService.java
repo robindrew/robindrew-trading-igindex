@@ -39,7 +39,7 @@ public interface IIgIndexRestService {
 
 	Account getAccount(AccountType type);
 
-	String openPosition(String epic, TradeDirection direction, BigDecimal size, int stopLoss, Integer stopProfit);
+	String openPosition(String epic, TradeDirection direction, BigDecimal size, BigDecimal stopLoss, BigDecimal stopProfit);
 
 	String closePosition(IPosition position);
 

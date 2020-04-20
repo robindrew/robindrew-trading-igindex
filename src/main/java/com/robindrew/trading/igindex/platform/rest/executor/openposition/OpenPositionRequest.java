@@ -13,13 +13,13 @@ public class OpenPositionRequest {
 	private final TradeDirection direction;
 	private final BigDecimal size;
 	private final OrderType orderType = OrderType.MARKET;
-	private final int stopDistance;
+	private final BigDecimal stopDistance;
 	private final boolean guaranteedStop;
-	private final Integer limitDistance;
+	private final BigDecimal limitDistance;
 	private final boolean forceOpen;
 	private final CurrencyCode currencyCode;
 
-	public OpenPositionRequest(String epic, TradeDirection direction, BigDecimal size, int stopDistance, Integer limitDistance) {
+	public OpenPositionRequest(String epic, TradeDirection direction, BigDecimal size, BigDecimal stopDistance, BigDecimal limitDistance) {
 		if (epic.isEmpty()) {
 			throw new IllegalArgumentException("epic is empty");
 		}
@@ -72,11 +72,11 @@ public class OpenPositionRequest {
 		return currencyCode;
 	}
 
-	public int getStopDistance() {
+	public BigDecimal getStopDistance() {
 		return stopDistance;
 	}
 
-	public Integer getLimitDistance() {
+	public BigDecimal getLimitDistance() {
 		return limitDistance;
 	}
 

@@ -216,7 +216,7 @@ public class IgIndexRestService implements IIgIndexRestService {
 	}
 
 	@Override
-	public String openPosition(String epic, TradeDirection direction, BigDecimal size, int stopLoss, Integer stopProfit) {
+	public String openPosition(String epic, TradeDirection direction, BigDecimal size, BigDecimal stopLoss, BigDecimal stopProfit) {
 		activityCache.clear();
 		OpenPositionRequest request = new OpenPositionRequest(epic, direction, size, stopLoss, stopProfit);
 		OpenPositionResponse response = new OpenPositionExecutor(this, request).execute();
