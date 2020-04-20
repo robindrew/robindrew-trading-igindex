@@ -8,8 +8,7 @@ import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.Account;
 import com.robindrew.trading.igindex.platform.rest.executor.getaccounts.response.AccountType;
 import com.robindrew.trading.platform.account.AbstractAccountService;
-import com.robindrew.trading.trade.money.IMoney;
-import com.robindrew.trading.trade.money.Money;
+import com.robindrew.trading.trade.currency.Currency;
 
 public class IgIndexAccountService extends AbstractAccountService {
 
@@ -31,9 +30,9 @@ public class IgIndexAccountService extends AbstractAccountService {
 	}
 
 	@Override
-	public IMoney getBalance() {
+	public Currency getBalance() {
 		Account account = rest.getAccount(type);
-		return new Money(account.getBalance().getAvailable(), currency);
+		return new Currency(currency, account.getBalance().getAvailable());
 	}
 
 }
