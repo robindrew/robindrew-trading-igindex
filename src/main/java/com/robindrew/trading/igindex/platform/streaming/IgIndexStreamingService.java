@@ -46,8 +46,8 @@ public class IgIndexStreamingService extends AbstractStreamingService<IIgIndexIn
 	}
 
 	@Override
-	public boolean subscribe(IIgIndexInstrument instrument) {
-		if (isSubscribed(instrument)) {
+	public boolean subscribeToPrices(IIgIndexInstrument instrument) {
+		if (isSubscribedInstrument(instrument)) {
 			return true;
 		}
 
@@ -80,8 +80,8 @@ public class IgIndexStreamingService extends AbstractStreamingService<IIgIndexIn
 	}
 
 	@Override
-	public boolean unsubscribe(IIgIndexInstrument instrument) {
-		if (!isSubscribed(instrument)) {
+	public boolean unsubscribeFromPrices(IIgIndexInstrument instrument) {
+		if (!isSubscribedInstrument(instrument)) {
 			return false;
 		}
 
