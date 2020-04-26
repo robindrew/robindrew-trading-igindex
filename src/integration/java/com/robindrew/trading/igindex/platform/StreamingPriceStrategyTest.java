@@ -3,7 +3,6 @@ package com.robindrew.trading.igindex.platform;
 import org.junit.Test;
 
 import com.robindrew.common.util.Threads;
-import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IIgIndexInstrument;
 import com.robindrew.trading.igindex.IgIndexInstrument;
 import com.robindrew.trading.igindex.platform.rest.IIgIndexRestService;
@@ -53,7 +52,7 @@ public class StreamingPriceStrategyTest {
 
 	class TestTradingStrategy extends LatestPriceTradingStrategy<IIgIndexInstrument> {
 
-		public TestTradingStrategy(IgIndexTradingPlatform platform, IInstrument instrument) {
+		public TestTradingStrategy(IgIndexTradingPlatform platform, IIgIndexInstrument instrument) {
 			super("TestTradingStrategy", platform, instrument);
 		}
 

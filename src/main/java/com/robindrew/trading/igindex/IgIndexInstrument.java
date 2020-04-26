@@ -19,15 +19,16 @@ import static com.robindrew.trading.Instruments.US_CRUDE_OIL;
 import static com.robindrew.trading.Instruments.XAG_USD;
 import static com.robindrew.trading.Instruments.XAU_USD;
 
+import java.util.List;
+
 import com.robindrew.trading.IInstrument;
-import com.robindrew.trading.Instrument;
-import com.robindrew.trading.InstrumentType;
-import com.robindrew.trading.price.precision.IPricePrecision;
+import com.robindrew.trading.Instruments;
 import com.robindrew.trading.price.precision.PricePrecision;
 import com.robindrew.trading.provider.ITradingProvider;
 import com.robindrew.trading.provider.TradingProvider;
+import com.robindrew.trading.provider.TradingInstrument;
 
-public class IgIndexInstrument extends Instrument implements IIgIndexInstrument {
+public class IgIndexInstrument extends TradingInstrument implements IIgIndexInstrument {
 
 	/** AUD/USD. */
 	public static final IgIndexInstrument SPOT_AUD_USD = new IgIndexInstrument("CS.D.AUDUSD.TODAY.IP", AUD_USD);
@@ -77,24 +78,24 @@ public class IgIndexInstrument extends Instrument implements IIgIndexInstrument 
 	/** BRENT CRUDE. */
 	public static final IgIndexInstrument SPOT_BRENT_CRUDE = new IgIndexInstrument("CC.D.LCO.USS.IP", BRENT_CRUDE_OIL);
 
-	private final IPricePrecision precision = new PricePrecision(2);
+	private static final List<IgIndexInstrument> INSTRUMENTS = Instruments.fromFields(IgIndexInstrument.class);
 
-	public IgIndexInstrument(String epic, IInstrument underlying) {
-		super(epic, underlying);
+	public static IgIndexInstrument forEpic(String epic) {
+		for (IgIndexInstrument instrument : INSTRUMENTS) {
+			if (instrument.getEpic().equals(epic)) {
+				return instrument;
+			}
+		}
+		throw new IllegalArgumentException("EPIC not supported: " + epic);
 	}
 
-	public IgIndexInstrument(String epic, InstrumentType type) {
-		super(epic, type);
+	public IgIndexInstrument(String epic, IInstrument underlying) {
+		super(epic, underlying, new PricePrecision(2));
 	}
 
 	@Override
 	public String getEpic() {
 		return getName();
-	}
-
-	@Override
-	public IPricePrecision getPrecision() {
-		return precision;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 
 import com.robindrew.common.locale.CurrencyCode;
-import com.robindrew.trading.IInstrument;
 import com.robindrew.trading.igindex.IgIndexInstrument;
 import com.robindrew.trading.igindex.platform.rest.executor.IgIndexJsonObject;
 import com.robindrew.trading.position.Positions;
@@ -82,13 +81,9 @@ public class MarketPosition extends IgIndexJsonObject implements IMarketPosition
 		return !isProfit();
 	}
 
-	public com.robindrew.trading.InstrumentType getInstrumentType() {
-		throw new UnsupportedOperationException();
-	}
-
 	@Override
-	public IInstrument getInstrument() {
-		return new IgIndexInstrument(getEpic(), getInstrumentType());
+	public IgIndexInstrument getInstrument() {
+		return IgIndexInstrument.forEpic(getEpic());
 	}
 
 	@Override
